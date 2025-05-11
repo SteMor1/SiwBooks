@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <title>Libri</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+
+<body>
+<header class="top-bar">
+  <h1>SIWBooks</h1>
+  <nav>
+    <a href="/">Home</a>
+    <a href="#">Libri</a>
+    <a href="#">Autori</a>
+    <a href="#">Login</a>
+  </nav>
+</header>
+<div class="book-grid">
+  <div th:if="${books.isEmpty()}">Nessun libro presente nel sistema</div>
+  <div class="book-card" th:each="book : ${books}">
+    <a th:href="@{'/book/' + ${book.id}}">
+      <div class="book-info">
+        <h2 th:text="${book.title}">Titolo</h2>
+        <p th:text="${#temporals.format(book.publicationDate, 'yyyy')}">Anno</p>
+      </div>
+    </a>
+  </div>
+</div>
+
+</body>
+
+</html>

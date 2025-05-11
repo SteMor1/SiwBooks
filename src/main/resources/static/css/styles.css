@@ -41,3 +41,55 @@ body {
     outline: none; /* Rimuove il contorno di focus */
     text-decoration: underline;
 }
+.book-info {
+    padding: 15px 20px; /* maggiore spazio per il testo */
+}
+
+.book-info h2 {
+    font-size: 1.4em; /* titolo più grande */
+    margin: 0;
+    font-weight: 500;
+    color: #333333; /* colore del titolo scuro per il contrasto */
+}
+
+.book-info p {
+    margin: 5px 0 0;
+    color: #777777; /* grigio chiaro per il testo secondario */
+    font-size: 1em; /* leggermente più grande per migliore leggibilità */
+}
+.book-grid {
+     display: grid;
+     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* larghezza delle card */
+     gap: 25px;
+     padding: 30px;
+ }
+
+.book-card {
+    width: 100%;
+    max-width: 240px;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: #ffffff; /* bianco per una card pulita e elegante */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* ombra leggera per profondità */
+    text-align: center;
+    text-decoration: none;
+    margin: auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.book-card:hover {
+    transform: translateY(-5px); /* sollevamento delicato alla selezione */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* ombra più marcata al passaggio del mouse */
+}
+
+.book-poster {
+    width: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 8px; /* bordi arrotondati per un aspetto più morbido */
+    transition: transform 0.3s ease;
+}
+
+.movie-poster:hover {
+    transform: scale(1.05); /* effetto zoom più morbido */
+}
