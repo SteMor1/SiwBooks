@@ -1,0 +1,43 @@
+/* Stili generali */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9; /* Leggero background grigio chiaro per il corpo */
+}
+
+/* Stili per la top bar */
+.top-bar {
+    background: linear-gradient(to right, #0066cc, #33cc99); /* Gradiente blu-verde */
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Leggera ombra per dare profondità */
+}
+
+.top-bar h1 {
+    margin: 0;
+    font-size: 28px;
+    letter-spacing: 1px; /* Leggero spazio tra le lettere per un look più moderno */
+}
+
+.top-bar nav a {
+    color: white;
+    margin: 0 20px;
+    text-decoration: none;
+    font-weight: bold; /* Per dare un po' di enfasi ai link */
+    transition: color 0.3s ease, transform 0.3s ease; /* Aggiungi transizioni dolci per effetto hover */
+}
+
+.top-bar nav a:hover {
+    color: #ffcc00; /* Colore dorato quando il link è in hover */
+    transform: scale(1.1); /* Leggero effetto di ingrandimento al passaggio del mouse */
+}
+
+/* Hover sugli altri elementi */
+.top-bar nav a:focus, .top-bar nav a:active {
+    outline: none; /* Rimuove il contorno di focus */
+    text-decoration: underline;
+}
