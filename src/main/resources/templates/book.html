@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <title>Scheda libro</title>
-    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/styles2.css" />
 </head>
 <body>
 
@@ -16,17 +16,36 @@
         <a href="#">Login</a>
     </nav>
 </header>
-<h1 th:text="${book.title + ' (' + #temporals.format(book.publicationDate, 'yyyy') + ')'}">Titolo</h1>
-    <p>Descrizione con parole random </p>
-    <h1>Autori</h1>
-    <div th:if="${book.getAuthors().isEmpty()}">Non ci sono autori per questo libro</div>
-    <div>
-        <div  th:each="author : ${book.getAuthors()}">
-            <div>
+
+<main class="book-page">
+
+    <section class="book-header">
+        <h1 th:text="${book.title + ' (' + #temporals.format(book.publicationDate, 'yyyy') + ')'}">Titolo</h1>
+        <p class="book-description">Descrizione con parole random</p>
+    </section>
+
+    <section class="book-authors">
+        <h2>Autori</h2>
+        <div th:if="${book.getAuthors().isEmpty()}">Non ci sono autori per questo libro</div>
+        <div class="authors-list">
+            <div th:each="author : ${book.getAuthors()}" class="author">
                 <a th:href="@{'/author/' + ${author.id}}"
                    th:text="|${author.firstName} ${author.lastName} (${author.dateOfBirth})|">Autore</a>
             </div>
         </div>
-    </div>
+    </section>
+
+    <section class="book-reviews">
+        <h2>Recensioni</h2>
+        <div class="reviews" th:if="${book.getReviews().isEmpty()}">Non ci sono recensioni per questo libro</div>
+        <div class="reviews-list">
+            <div class="review" th:each="review : ${book.getReviews()}">
+                <p class="review-text" th:text="${review.getText()}">Testo recensione</p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
 </body>
 </html>

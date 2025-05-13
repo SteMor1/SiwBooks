@@ -14,7 +14,8 @@ public class Book {
     private LocalDate publicationDate;
     @ManyToMany
     private List<Author> authors;
-
+    @OneToMany
+    private List<Review> reviews;
     public Long getId() {
         return id;
     }
@@ -45,5 +46,11 @@ public class Book {
 
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
+    }
+    public List<Review> getReviews() {
+        return reviews;
+    }
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 }
