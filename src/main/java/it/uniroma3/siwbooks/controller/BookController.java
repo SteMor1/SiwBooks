@@ -26,7 +26,7 @@ public class BookController {
         return "book";
     }
     @GetMapping("/admin/formNewBook")
-    public String FormNewBook(Model model) {
+    public String formNewBook(Model model) {
         model.addAttribute("book", new Book());
         return "formNewBook";
     }
