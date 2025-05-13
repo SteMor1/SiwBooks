@@ -30,7 +30,7 @@
         <div class="authors-list">
             <div th:each="author : ${book.getAuthors()}" class="author">
                 <a th:href="@{'/author/' + ${author.id}}"
-                   th:text="|${author.firstName} ${author.lastName} (${author.dateOfBirth})|">Autore</a>
+                   th:text="|${author.firstName} ${author.lastName}|">Autore</a>
             </div>
         </div>
     </section>

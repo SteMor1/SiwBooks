@@ -89,6 +89,66 @@ main.book-page {
     color: #1a5e66;
     text-decoration: underline;
 }
+/* Pagina Autore */
+.author-page {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Profilo autore */
+.author-profile {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    margin-bottom: 40px;
+}
+
+.author-photo img {
+    width: 200px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.author-info h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.author-info p {
+    font-size: 16px;
+    margin: 6px 0;
+    color: #444;
+}
+
+/* Sezione libri dell'autore */
+.author-books h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.author-books ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.author-books li {
+    margin-bottom: 8px;
+}
+
+.author-books a {
+    color: #207a85;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.author-books a:hover {
+    text-decoration: underline;
+    color: #1a5e66;
+}
+
 
 /* SEZIONE RECENSIONI */
 .book-reviews {

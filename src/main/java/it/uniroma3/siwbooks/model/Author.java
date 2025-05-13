@@ -18,6 +18,9 @@ public class Author {
     @Column(nullable = false)
     private String nationality;
 
+    @OneToOne
+    private Image picture;
+
     public Long getId() {
         return id;
     }
@@ -64,5 +67,13 @@ public class Author {
 
     public void setNationality(String nationality) {
         this.nationality = nationality;
+    }
+
+    public Image getPicture() {
+        return picture;
+    }
+
+    public void setPicture(Image picture) {
+        this.picture = picture;
     }
 }

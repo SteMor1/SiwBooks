@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Profilo Autore</title>
+    <link rel="stylesheet" href="/css/styles2.css" />
+</head>
+<body>
+
+<header class="top-bar">
+    <h1>SIWBooks</h1>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/book">Libri</a>
+        <a href="/author">Autori</a>
+        <a href="#">Login</a>
+    </nav>
+</header>
+
+<main class="author-page">
+    <section class="author-profile">
+        <div class="author-photo">
+            <img th:src="@{/images/{id}.jpg(id=${author.id})}" alt="Foto autore" onerror="this.onerror=null;this.src='/images/avatar_placeholder.jpg';">
+        </div>
+        <div class="author-info">
+            <h1 th:text="${author.firstName + ' ' + author.lastName}">Nome Cognome</h1>
+            <p><strong>Data di nascita:</strong> <span th:text="${#temporals.format(author.dateOfBirth, 'dd MMMM yyyy')}">10 febbraio 1950</span></p>
+            <p th:if="${author.dateOfDeath != null}"><strong>Data di morte:</strong> <span th:text="${#temporals.format(author.dateOfDeath, 'dd MMMM yyyy')}">5 agosto 2020</span></p>
+            <p><strong>Nazionalità:</strong> <span th:text="${author.nationality}">Italiana</span></p>
+        </div>
+    </section>
+
+
+</main>
+
+</body>
+</html>
