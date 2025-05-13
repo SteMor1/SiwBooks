@@ -1,14 +1,17 @@
 package it.uniroma3.siwbooks.controller;
 
 import it.uniroma3.siwbooks.model.Author;
+import it.uniroma3.siwbooks.model.Image;
 import it.uniroma3.siwbooks.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Controller
 public class AuthorController {
@@ -30,4 +33,24 @@ public class AuthorController {
                 .contentType(MediaType.IMAGE_JPEG) // o rileva dinamicamente
                 .body(data);
     }
+    @GetMapping("/admin/formNewAuthor")
+    public String formNewAuthor(Model model) {
+        model.addAttribute("author", new Author());
+        return "formNewAuthor";
+    }
+    @PostMapping("/author")
+    public String saveAuthor(@ModelAttribute("author") Author author, @RequestParam("imageFile") MultipartFile imageFile) {
+        //TODO Input Validation
+        Image picture = new Image();
+        try {
+            picture.setData(imageFile.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        author.setPicture(picture);
+        authorService.saveAuthor(author);
+        return "redirect:author/" + author.getId();
+    }
+
+
 }

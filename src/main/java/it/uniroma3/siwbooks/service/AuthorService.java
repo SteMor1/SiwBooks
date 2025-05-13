@@ -12,4 +12,7 @@ public class AuthorService {
     public Author getAuthorById(Long id) {
        return authorRepository.findById(id).orElse(null);
     }
+    public void saveAuthor(Author author) {
+        authorRepository.save(author);
+    }
 }

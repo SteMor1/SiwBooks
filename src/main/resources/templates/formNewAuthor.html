@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Inserisci Autore</title>
+  <link rel="stylesheet" href="/css/styles2.css" />
+</head>
+<body>
+<h1>Nuovo Autore</h1>
+<form th:action="@{/author}" method="post" enctype="multipart/form-data" th:object="${author}">
+  <label for="firstName">Nome:</label>
+  <input type="text" id="firstName" th:field="*{firstName}" required /><br/><br/>
+
+  <label for="lastName">Cognome:</label>
+  <input type="text" id="lastName" th:field="*{lastName}" required /><br/><br/>
+
+  <label for="nationality">Nazionalità:</label>
+  <input type="text" id="nationality" th:field="*{nationality}" required /><br/><br/>
+
+  <label for="dateOfBirth">Data di Nascita:</label>
+  <input type="date" id="dateOfBirth" th:field="*{dateOfBirth}" required /><br/><br/>
+
+  <label for="dateOfDeath">Data di Morte:</label>
+  <input type="date" id="dateOfDeath" th:field="*{dateOfDeath}"  /><br/><br/>
+
+  <label for="imageFile">Foto:</label>
+  <input type="file" id="imageFile" name="imageFile" accept="image/*"  /><br/><br/>
+
+  <button type="submit">Salva</button>
+</form>
+</body>
+</html>

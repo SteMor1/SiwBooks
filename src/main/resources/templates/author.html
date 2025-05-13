@@ -20,7 +20,7 @@
 <main class="author-page">
     <section class="author-profile">
         <div class="author-photo">
-            <img th:src="@{/images/{id}.jpg(id=${author.id})}" alt="Foto autore" onerror="this.onerror=null;this.src='/images/avatar_placeholder.jpg';">
+            <img th:src="@{'/author/' + ${author.id} + '/photo'}" alt="Foto autore" onerror="this.onerror=null;this.src='/images/avatar_placeholder.jpg';">
         </div>
         <div class="author-info">
             <h1 th:text="${author.firstName + ' ' + author.lastName}">Nome Cognome</h1>

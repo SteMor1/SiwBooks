@@ -18,7 +18,7 @@ public class Author {
     @Column(nullable = false)
     private String nationality;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Image picture;
 
     public Long getId() {
@@ -76,4 +76,5 @@ public class Author {
     public void setPicture(Image picture) {
         this.picture = picture;
     }
+
 }
