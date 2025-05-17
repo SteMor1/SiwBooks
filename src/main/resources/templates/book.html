@@ -40,6 +40,13 @@
         <div class="reviews" th:if="${book.getReviews().isEmpty()}">Non ci sono recensioni per questo libro</div>
         <div class="reviews-list">
             <div class="review" th:each="review : ${book.getReviews()}">
+                <p class="review-title" th:text="${review.getTitle()}">Titolo recensione</p>
+                <div class="review-meta">
+                    <span class="review-author" th:text="${review.author.username}">Nome Autore</span>
+                    <span class="review-stars" th:utext="${'★'.repeat(review.getRating()) + '☆'.repeat(5 - review.getRating())}">
+                    ★★★★☆
+                </span>
+                </div>
                 <p class="review-text" th:text="${review.getText()}">Testo recensione</p>
             </div>
         </div>

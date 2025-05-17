@@ -28,13 +28,17 @@ public class BookController {
     @GetMapping("/admin/formNewBook")
     public String formNewBook(Model model) {
         model.addAttribute("book", new Book());
-        return "formNewBook";
+        return "admin/formNewBook";
     }
-    @PostMapping("/book")
+    @PostMapping("/admin/book")
     public String saveBook(@ModelAttribute("book") Book book) {
         //TODO Input Validation
         bookService.saveBook(book);
-        return "redirect:book/"+book.getId();
+        return "redirect:/book/"+book.getId();
+    }
+    @GetMapping("/admin/indexBook")
+    public String indexBook(Model model) {
+        return "admin/indexBook";
     }
 
 

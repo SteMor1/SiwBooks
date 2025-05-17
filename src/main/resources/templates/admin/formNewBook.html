@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Nuovo Libro</h1>
-<form th:action="@{/book}" method="post" enctype="multipart/form-data" th:object="${book}">
+<form th:action="@{/admin/book}" method="post" enctype="multipart/form-data" th:object="${book}">
     <label for="title">Titolo:</label>
     <input type="text" id="title" th:field="*{title}" required /><br/><br/>
 
@@ -14,7 +14,7 @@
     <input type="date" id="publicationDate" th:field="*{publicationDate}" required /><br/><br/>
 
     <label for="imageFile">Copertina (immagine):</label>
-    <input type="file" id="imageFile" name="imageFile" accept="image/*" required /><br/><br/>
+    <input type="file" id="imageFile" name="imageFile" accept="image/*"  /><br/><br/>
 
     <button type="submit">Salva</button>
 </form>

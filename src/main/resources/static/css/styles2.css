@@ -179,3 +179,23 @@ main.book-page {
     line-height: 1.5;
     color: #333;
 }
+.review-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+}
+
+.review-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: #666;
+}
+
+.review-stars {
+    color: #FFD700; /* gold */
+    font-size: 1rem;
+    letter-spacing: 1px;
+}
