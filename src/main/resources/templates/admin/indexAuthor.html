@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagina di gestione degli Autori</title>
+</head>
+<body>
+<h1>Gestione Autori</h1>
+<a href="/admin/formNewAuthor">Aggiungi Autore</a>
+
+<section>
+    <div>
+        <div th:if="${authors.isEmpty()}">Nessun autore presente nel sistema</div>
+        <div th:each="author : ${authors}">
+
+            <!-- Riga autore + azioni -->
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+
+                <!-- Nome autore con link -->
+                <a th:href="@{'/author/' + ${author.id}}"
+                   th:text="${author.firstName + ' ' + author.lastName}">Nome Cognome</a>
+
+                <!-- Link modifica -->
+                <a th:href="@{'/admin/formUpdateAuthor/' + ${author.id}}">Modifica</a>
+                <a th:href="@{'/admin/deleteAuthor/' + ${author.id}}">Cancella</a>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+</body>
+</html>

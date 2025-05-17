@@ -36,9 +36,9 @@ public class AuthorController {
     @GetMapping("/admin/formNewAuthor")
     public String formNewAuthor(Model model) {
         model.addAttribute("author", new Author());
-        return "formNewAuthor";
+        return "admin/formNewAuthor";
     }
-    @PostMapping("/author")
+    @PostMapping("/admin/author")
     public String saveAuthor(@ModelAttribute("author") Author author, @RequestParam("imageFile") MultipartFile imageFile) {
         //TODO Input Validation
         Image picture = new Image();
@@ -49,7 +49,27 @@ public class AuthorController {
         }
         author.setPicture(picture);
         authorService.saveAuthor(author);
-        return "redirect:author/" + author.getId();
+        return "redirect:/author/" + author.getId();
+    }
+    @GetMapping("/admin/indexAuthor")
+    public String indexAuthor(Model model) {
+        model.addAttribute("authors",authorService.getAllAuthors());
+        return "admin/indexAuthor";
+    }
+    @GetMapping("/admin/deleteAuthor/{id}")
+    public String deleteAuthor(@PathVariable("id") Long id,Model model) {
+        authorService.deleteAuthor(id);
+        return "redirect:/admin/indexAuthor";
+    }
+    @GetMapping("/admin/formUpdateAuthor/{id}")
+    public String updateAuthor(@PathVariable("id") Long id,Model model) {
+        model.addAttribute("author", authorService.getAuthorById(id));
+        return "admin/formUpdateAuthor";
+    }
+    @PostMapping("/admin/updateAuthor")
+    public String updateAuthor(@ModelAttribute("author") Author author, Model model) {
+        authorService.updateAuthor(author);
+        return "redirect:/admin/indexAuthor";
     }
 
 

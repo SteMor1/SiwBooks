@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Aggiorna Autore</title>
+</head>
+<body>
+<h1>Aggiorna informazioni autore</h1>
+
+<form th:action="@{'/admin/updateAuthor'}" th:object="${author}" method="post">
+
+    <input type="hidden" th:field="*{id}" />
+
+    <div>
+        <label for="firstName">Nome:</label>
+        <input type="text" id="firstName" th:field="*{firstName}" required />
+    </div>
+
+    <div>
+        <label for="lastName">Cognome:</label>
+        <input type="text" id="lastName" th:field="*{lastName}" required />
+    </div>
+
+    <div>
+        <label for="dateOfBirth">Data di nascita:</label>
+        <input type="date" id="dateOfBirth" name="dateOfBirth" th:value="${#temporals.format(author.dateOfBirth, 'yyyy-MM-dd')}" required />
+
+    </div>
+
+    <div>
+        <label for="dateOfDeath">Data di morte (opzionale):</label>
+        <input type="date" id="dateOfDeath" name="dateOfDeath" th:value="${author.dateOfDeath != null ? #temporals.format(author.dateOfDeath, 'yyyy-MM-dd') : ''}" />
+
+    </div>
+
+    <div>
+        <label for="nationality">Nazionalità:</label>
+        <input type="text" id="nationality" th:field="*{nationality}" required />
+    </div>
+
+    <div>
+        <button type="submit">Aggiorna</button>
+    </div>
+</form>
+
+</body>
+</html>

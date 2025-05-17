@@ -7,7 +7,7 @@
 </head>
 <body>
 <h1>Nuovo Autore</h1>
-<form th:action="@{/author}" method="post" enctype="multipart/form-data" th:object="${author}">
+<form th:action="@{/admin/author}" method="post" enctype="multipart/form-data" th:object="${author}">
   <label for="firstName">Nome:</label>
   <input type="text" id="firstName" th:field="*{firstName}" required /><br/><br/>
 

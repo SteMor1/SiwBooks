@@ -5,6 +5,8 @@ import it.uniroma3.siwbooks.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AuthorService {
     @Autowired
@@ -14,5 +16,14 @@ public class AuthorService {
     }
     public void saveAuthor(Author author) {
         authorRepository.save(author);
+    }
+    public Iterable<Author> getAllAuthors() {
+        return authorRepository.findAll();
+    }
+    public void deleteAuthor(Long id) {
+        authorRepository.deleteById(id);
+    }
+    public Author updateAuthor(Author author) {
+        return authorRepository.save(author);
     }
 }
