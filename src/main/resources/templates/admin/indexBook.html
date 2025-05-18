@@ -1,11 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <title>Pagina di gestione dei Libri</title>
 </head>
 <body>
-    <h1>Gestione dei Libri</h1>
-    <a href="/admin/formNewBook">Aggiungi Libro</a>
+<h1>Gestione Autori</h1>
+<a href="/admin/formNewBook">Aggiungi Libro</a>
+
+<section>
+    <div>
+        <div th:if="${books.isEmpty()}">Nessun autore presente nel sistema</div>
+        <div th:each="book : ${books}">
+
+            <!-- Riga autore + azioni -->
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+
+                <!-- Nome autore con link -->
+                <a th:href="@{'/book/' + ${book.id}}"
+                   th:text="${book.title + ' (' + #temporals.format(book.publicationDate, 'yyyy')+')'}">Titolo e data</a>
+
+                <!-- Link modifica -->
+                <a th:href="@{'/admin/formUpdateBook/' + ${book.id}}">Modifica</a>
+                <a th:href="@{'/admin/deleteBook/' + ${book.id}}">Cancella</a>
+
+            </div>
+
+        </div>
+    </div>
+</section>
 </body>
 </html>

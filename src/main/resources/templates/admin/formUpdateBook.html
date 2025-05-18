@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Aggiorna Libro</title>
+</head>
+<body>
+<h1>Aggiorna informazioni libro</h1>
+
+<form th:action="@{'/admin/updateBook'}" th:object="${book}" method="post">
+
+    <input type="hidden" th:field="*{id}" />
+
+    <div>
+        <label for="title">Titolo:</label>
+        <input type="text" id="title" th:field="*{title}" required />
+    </div>
+
+
+
+    <div>
+        <label for="publicationDate">Data di pubblicazione:</label>
+        <input type="date" id="publicationDate" name="publicationDate" th:value="${#temporals.format(book.publicationDate, 'yyyy-MM-dd')}" required />
+
+    </div>
+
+    <div>
+        <button type="submit">Aggiorna</button>
+    </div>
+</form>
+
+</body>
+</html>

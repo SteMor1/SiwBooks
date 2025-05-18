@@ -1,5 +1,6 @@
 package it.uniroma3.siwbooks.controller;
 
+import it.uniroma3.siwbooks.model.Author;
 import it.uniroma3.siwbooks.model.Book;
 import it.uniroma3.siwbooks.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,25 @@ public class BookController {
     }
     @GetMapping("/admin/indexBook")
     public String indexBook(Model model) {
+        model.addAttribute("books", bookService.getAllBooks());
         return "admin/indexBook";
+    }
+    @GetMapping("/admin/formUpdateBook/{id}")
+    public String updateAuthor(@PathVariable("id") Long id,Model model) {
+        model.addAttribute("book", bookService.getBookById(id));
+        return "admin/formUpdateBook";
+    }
+    @PostMapping("/admin/updateBook")
+    public String updateAuthor(@ModelAttribute("book") Book book, Model model) {
+        bookService.updateBook(book);
+        return "redirect:/admin/indexBook";
+    }
+
+    @GetMapping("/admin/deleteBook/{id}")
+    public String deleteBook(@PathVariable("id") Long id,Model model) {
+
+        bookService.deleteBook(id);
+        return "redirect:/admin/indexBook";
     }
 
 
