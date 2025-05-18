@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registrazione</title>
+  <link rel="stylesheet" href="/css/styles2.css" />
+</head>
+<body>
+
+
+
+<div class="login-container">
+  <h2 class="login-title">Crea un account</h2>
+  <form class="login-form" th:action="@{/register}" method="POST" th:object="${credentials}">
+    <!-- User details -->
+    <label for="firstName">Nome</label>
+    <input type="text" id="firstName" name="firstName" required th:field="*{user.firstName}" />
+    <label for="lastName">Cognome</label>
+    <input type="text" id="lastName" name="lastName" required th:field="*{user.lastName}" />
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required th:field="*{user.email}" />
+
+    <!-- Username and Password for Credentials -->
+
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" required th:field="*{username}" />
+
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" th:field="*{password}" required />
+
+    <label for="confirm">Conferma Password</label>
+    <input type="password" id="confirm" name="confirm" required />
+
+    <button type="submit">Registrati</button>
+  </form>
+  <div class="login-footer">
+    Hai già un account? <a href="/login">Accedi</a>
+  </div>
+</div>
+
+</body>
+</html>

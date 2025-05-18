@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="stylesheet" href="/css/styles2.css" />
+</head>
+<body>
+  <div class="login-container">
+    <h2 class="login-title">Accedi al tuo account</h2>
+    
+    <!-- Modifica: Aggiungi action per il login -->
+    <form class="login-form" method="POST" action="/login">
+      
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required />
+
+      <button type="submit">Login</button>
+    </form>
+
+    <!-- Mostra errore se il login fallisce -->
+    <div th:if="${param.error != null}" class="error-message">
+      <p style="color:red;">Credenziali errate! Riprova.</p>
+    </div>
+
+    <div class="login-footer">
+      Non hai un account? <a href="/register">Registrati</a>
+    </div>
+  </div>
+</body>
+</html>
