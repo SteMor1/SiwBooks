@@ -3,6 +3,8 @@ package it.uniroma3.siwbooks.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
+
 @Entity
 public class Author {
     @Id
@@ -20,7 +22,8 @@ public class Author {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Image picture;
-
+    @ManyToMany(mappedBy = "authors")
+    private List<Book> books;
     public Long getId() {
         return id;
     }
@@ -77,4 +80,11 @@ public class Author {
         this.picture = picture;
     }
 
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
 }

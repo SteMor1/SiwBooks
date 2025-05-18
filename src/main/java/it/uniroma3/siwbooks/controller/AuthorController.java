@@ -58,6 +58,7 @@ public class AuthorController {
     }
     @GetMapping("/admin/deleteAuthor/{id}")
     public String deleteAuthor(@PathVariable("id") Long id,Model model) {
+
         authorService.deleteAuthor(id);
         return "redirect:/admin/indexAuthor";
     }
