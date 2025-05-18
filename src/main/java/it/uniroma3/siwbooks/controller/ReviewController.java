@@ -4,14 +4,16 @@ package it.uniroma3.siwbooks.controller;
 import it.uniroma3.siwbooks.model.Review;
 
 import it.uniroma3.siwbooks.service.BookService;
+import it.uniroma3.siwbooks.service.CredentialsService;
 import it.uniroma3.siwbooks.service.ReviewService;
 import it.uniroma3.siwbooks.service.UserService;
 
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +26,7 @@ public class ReviewController {
     @Autowired
     private BookService bookService;
     @Autowired
-    private UserService userService; // TODO RIMUOVERE SERVE SOLO PER I TEST
+    private CredentialsService credentialsService; // TODO RIMUOVERE SERVE SOLO PER I TEST
     @GetMapping("/formNewReview/{book_id}")
     public String formNewReview(Model model, @PathVariable("book_id") Long id) {
 
@@ -34,8 +36,8 @@ public class ReviewController {
     }
     @PostMapping("/addReviewToBook/{book_id}")
     public String addReviewToBook(@ModelAttribute("review") Review review, @PathVariable("book_id") Long book_id) {
-
-        review.setAuthor(userService.findById(51L));
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        review.setAuthor(credentialsService.getCredentials(userDetails.getUsername()).getUser());
         review.setBook(bookService.getBookById(book_id));
         try {
             reviewService.addReview(review);
