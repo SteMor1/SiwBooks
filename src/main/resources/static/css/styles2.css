@@ -199,3 +199,62 @@ main.book-page {
     font-size: 1rem;
     letter-spacing: 1px;
 }
+.btn-add-review {
+    display: inline-block;
+    background-color: #3c91e6;
+    color: white;
+    padding: 6px 12px;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.btn-add-review:hover {
+    background-color: #256fc3;
+}
+/*FORM RECENSIONI */
+.review-form-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f9f9fb;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.review-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.review-form label {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.review-form input,
+.review-form select,
+.review-form textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.btn-submit {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #3c91e6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background-color: #256fc3;
+}
