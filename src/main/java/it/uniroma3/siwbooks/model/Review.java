@@ -5,9 +5,9 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
+
 @Entity
 public class Review {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,7 +21,9 @@ public class Review {
     private int rating;
     @ManyToOne
     private User author;
-
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "book_id", nullable = false)
+    private Book book;
     public Long getId() {
         return id;
     }
@@ -60,6 +62,14 @@ public class Review {
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 }
 

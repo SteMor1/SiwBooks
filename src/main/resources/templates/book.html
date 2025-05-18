@@ -38,6 +38,9 @@
     <section class="book-reviews">
         <h2>Recensioni</h2>
         <div class="reviews" th:if="${book.getReviews().isEmpty()}">Non ci sono recensioni per questo libro</div>
+        <div class="add-review">
+            <a th:href="@{'/formNewReview/' + ${book.id}}" class="btn-add-review">Aggiungi Recensione</a>
+        </div>
         <div class="reviews-list">
             <div class="review" th:each="review : ${book.getReviews()}">
                 <p class="review-title" th:text="${review.getTitle()}">Titolo recensione</p>

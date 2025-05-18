@@ -14,7 +14,7 @@ public class Book {
     private LocalDate publicationDate;
     @ManyToMany
     private List<Author> authors;
-    @OneToMany
+    @OneToMany(mappedBy = "book")
     private List<Review> reviews;
     public Long getId() {
         return id;
