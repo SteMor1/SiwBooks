@@ -7,9 +7,11 @@ import it.uniroma3.siwbooks.service.BookService;
 import it.uniroma3.siwbooks.service.ReviewService;
 import it.uniroma3.siwbooks.service.UserService;
 
+import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,9 +34,14 @@ public class ReviewController {
     }
     @PostMapping("/addReviewToBook/{book_id}")
     public String addReviewToBook(@ModelAttribute("review") Review review, @PathVariable("book_id") Long book_id) {
+
         review.setAuthor(userService.findById(51L));
         review.setBook(bookService.getBookById(book_id));
-        reviewService.save(review);
+        try {
+            reviewService.addReview(review);
+        }catch (ValidationException e) {
+            return "redirect:/book/" + book_id;
+        }
         return "redirect:/book/" + book_id;
     }
 }
