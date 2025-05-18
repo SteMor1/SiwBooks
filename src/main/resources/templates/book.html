@@ -45,7 +45,7 @@
             <div class="review" th:each="review : ${book.getReviews()}">
                 <p class="review-title" th:text="${review.getTitle()}">Titolo recensione</p>
                 <div class="review-meta">
-                    <span class="review-author" th:text="${review.author.username}">Nome Autore</span>
+                    <span class="review-author" th:text="${review.author.email}">Nome Autore</span>
                     <span class="review-stars" th:utext="${'★'.repeat(review.getRating()) + '☆'.repeat(5 - review.getRating())}">
                     ★★★★☆
                 </span>
