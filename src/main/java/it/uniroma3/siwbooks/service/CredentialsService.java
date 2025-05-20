@@ -18,10 +18,10 @@ public class CredentialsService {
     @Autowired
     private CredentialsRepository credentialsRepository;
 
-    public Credentials getCredentials(Long id) {
+    public Credentials getCredentialsByUsername(Long id) {
         return credentialsRepository.findById(id).orElse(null);
     }
-    public Credentials getCredentials(String username) {
+    public Credentials getCredentialsByUsername(String username) {
         return credentialsRepository.findByUsername(username).orElse(null);
     }
     public Credentials saveCredentials(Credentials credentials) {

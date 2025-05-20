@@ -6,7 +6,6 @@ import it.uniroma3.siwbooks.model.Review;
 import it.uniroma3.siwbooks.service.BookService;
 import it.uniroma3.siwbooks.service.CredentialsService;
 import it.uniroma3.siwbooks.service.ReviewService;
-import it.uniroma3.siwbooks.service.UserService;
 
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ public class ReviewController {
     @PostMapping("/addReviewToBook/{book_id}")
     public String addReviewToBook(@ModelAttribute("review") Review review, @PathVariable("book_id") Long book_id) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        review.setAuthor(credentialsService.getCredentials(userDetails.getUsername()).getUser());
+        review.setAuthor(credentialsService.getCredentialsByUsername(userDetails.getUsername()).getUser());
         review.setBook(bookService.getBookById(book_id));
         try {
             reviewService.addReview(review);

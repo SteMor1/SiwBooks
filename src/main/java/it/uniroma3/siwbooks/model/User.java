@@ -1,6 +1,8 @@
 package it.uniroma3.siwbooks.model;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "users")

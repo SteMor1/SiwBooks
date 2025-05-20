@@ -3,7 +3,6 @@ package it.uniroma3.siwbooks.controller;
 
 
 import it.uniroma3.siwbooks.model.Credentials;
-import it.uniroma3.siwbooks.model.User;
 import it.uniroma3.siwbooks.service.CredentialsService;
 import it.uniroma3.siwbooks.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,18 +39,22 @@ public class AuthenticationController {
     @GetMapping("/success")
     public String defaultAfterLogin(Model model) {
         UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
+        Credentials credentials = credentialsService.getCredentialsByUsername(userDetails.getUsername());
         if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
             return "admin/indexAdmin.html";
         }
         return "index.html";
     }
     @PostMapping("/register")
-    public String registerPost(@ModelAttribute("credentials") Credentials credentials, BindingResult credentialsBindingResult, Model model) {
+    public String registerPost(@ModelAttribute("credentials") Credentials credentials, BindingResult credentialsBindingResult, Model model ,@ModelAttribute("confirm") String confirmPassword) {
         // TODO VALIDAZIONE
 
         //TODO VALUTARE SE DIVIDERE USER E CREDENTIALS
 
+        if(!confirmPassword.equals(credentials.getPassword())) {
+            model.addAttribute("error", "Passwords do not match");
+            return register(model);
+        }
         credentialsService.saveCredentials(credentials);
         return "redirect:login";
     }
@@ -64,7 +66,7 @@ public class AuthenticationController {
         }
         else {
             UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
+            Credentials credentials = credentialsService.getCredentialsByUsername(userDetails.getUsername());
             if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
                 return "admin/indexAdmin.html";
             }
