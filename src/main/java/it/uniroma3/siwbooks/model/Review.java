@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.Objects;
+
 
 @Entity
 public class Review {
@@ -70,6 +72,18 @@ public class Review {
 
     public void setBook(Book book) {
         this.book = book;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Review review = (Review) o;
+        return Objects.equals(author, review.author) && Objects.equals(book, review.book);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(author, book);
     }
 }
 

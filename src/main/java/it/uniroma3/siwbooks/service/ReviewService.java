@@ -19,5 +19,14 @@ public class ReviewService {
     public boolean existsByBookAndAuthor(Long bookId, Long userId) {
         return reviewRepository.existsByBookIdAndAuthorId(bookId,userId);
     };
+    public Review getReview(Long id) {
+        return reviewRepository.findById(id).orElse(null);
+    }
+    public void save(Review review) {
+        reviewRepository.save(review);
+    }
+    public void delete(Long id) {
+        reviewRepository.deleteById(id);
+    }
 
 }

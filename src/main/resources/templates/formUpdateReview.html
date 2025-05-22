@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Nuova Recensione</title>
+  <link rel="stylesheet" href="/css/styles2.css">
+</head>
+<body>
+
+<header class="top-bar">
+  <h1>SIWBooks</h1>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/book">Libri</a>
+    <a href="#">Autori</a>
+    <a href="#">Login</a>
+  </nav>
+</header>
+
+<main class="review-form-container">
+  <h2>Modifica Recensione</h2>
+
+  <form th:action="@{'/updateReview'}" th:object="${review}" method="post" class="review-form">
+
+    <input type="hidden" th:field="*{id}" /> <!-- Altrimenti il campo si perderebbe -->
+
+    <label for="title">Titolo</label>
+    <input type="text" id="title" th:field="*{title}" required />
+
+    <label for="rating">Voto</label>
+    <select id="rating" th:field="*{rating}" required>
+      <option th:each="i : ${#numbers.sequence(1,5)}" th:value="${i}" th:text="${i}">1</option>
+    </select>
+
+    <label for="text">Testo</label>
+    <textarea id="text" th:field="*{text}" rows="6" required></textarea>
+
+    <button type="submit" class="btn-submit">Invia Recensione</button>
+  </form>
+</main>
+
+</body>
+</html>
