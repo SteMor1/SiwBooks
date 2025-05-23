@@ -9,18 +9,12 @@
 </head>
 <body>
 
-<header class="top-bar">
-    <h1>SIWBooks</h1>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/book">Libri</a>
-        <a href="#">Autori</a>
-        <a href="#">Login</a>
-    </nav>
-</header>
+<div th:replace="fragments/topBar :: site-header"></div>
 
 <a th:text="|${'Benvenuto '+user.firstName} ${user.lastName}|">Nome Utente</a>
-<a href="/myProfile/changePassword">Cambia password</a>
+<div><a href="/myProfile/changePassword">Cambia password</a></div>
+
+<div><a href="/logout"> Logout</a></div>
 
 </body>
 </html>
