@@ -43,6 +43,13 @@
         </div>
         <div class="reviews-list">
             <div class="review" th:each="review : ${book.getReviews()}">
+                <div class="menu-button-container" >
+                    <button class="menu-button" onclick="toggleMenu(this)">⋮</button>
+                    <div class="menu-dropdown hidden">
+                        <a th:href="@{'/updateReview/' + ${review.id}}">Modifica</a>
+                        <a th:href="@{'/deleteReview/' + ${review.id}}" onclick="return confirm('Eliminare la recensione?')">Elimina</a>
+                    </div>
+                </div>
                 <p class="review-title" th:text="${review.getTitle()}">Titolo recensione</p>
                 <div class="review-meta">
                     <span class="review-author" th:text="${review.author.email}">Nome Autore</span>
@@ -56,6 +63,29 @@
     </section>
 
 </main>
+
+
+
+<script>
+    function toggleMenu(button) {
+        const menu = button.nextElementSibling;
+        menu.classList.toggle("hidden");
+
+        // Chiude gli altri menu aperti
+        document.querySelectorAll('.menu-dropdown').forEach(dropdown => {
+            if (dropdown !== menu) dropdown.classList.add('hidden');
+        });
+
+        // Chiudi il menu cliccando fuori
+        document.addEventListener('click', function handler(e) {
+            if (!button.parentElement.contains(e.target)) {
+                menu.classList.add('hidden');
+                document.removeEventListener('click', handler);
+            }
+        });
+    }
+</script>
+
 
 </body>
 </html>

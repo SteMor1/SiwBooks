@@ -52,7 +52,7 @@ public class AuthenticationController {
         //TODO VALUTARE SE DIVIDERE USER E CREDENTIALS
 
         if(!confirmPassword.equals(credentials.getPassword())) {
-            model.addAttribute("error", "Passwords do not match");
+            model.addAttribute("error", "Passwords do not match"); //TODO MOSTRARE ERRORE
             return register(model);
         }
         credentialsService.saveCredentials(credentials);
