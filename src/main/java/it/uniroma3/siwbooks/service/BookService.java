@@ -22,7 +22,13 @@ public class BookService {
         return bookRepository.save(book);
     }
     public Book updateBook(Book book) {
-        return bookRepository.save(book);
+        Book bookToUpdate = bookRepository.findById(book.getId()).orElse(null);
+        if (bookToUpdate != null) {
+            bookToUpdate.setTitle(book.getTitle());
+            bookToUpdate.setPublicationDate(book.getPublicationDate());
+            return bookRepository.save(bookToUpdate);
+        }
+        return null;
     }
     public void deleteBook(Long id) {
         Book bookToDelete = getBookById(id);
@@ -30,5 +36,11 @@ public class BookService {
             author.getBooks().remove(bookToDelete);
         }
         bookRepository.deleteById(id);
+    }
+    public void addAuthorToBook(Long authorId, Long bookId) {
+        bookRepository.addAuthorToBook(authorId, bookId);
+    }
+    public void removeAuthorFromBook(Long authorId, Long bookId) {
+        bookRepository.removeAuthorFromBook(authorId, bookId);
     }
 }

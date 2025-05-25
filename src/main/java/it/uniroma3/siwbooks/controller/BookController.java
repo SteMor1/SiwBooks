@@ -2,6 +2,7 @@ package it.uniroma3.siwbooks.controller;
 
 import it.uniroma3.siwbooks.model.Author;
 import it.uniroma3.siwbooks.model.Book;
+import it.uniroma3.siwbooks.service.AuthorService;
 import it.uniroma3.siwbooks.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class BookController {
     @Autowired
     private BookService bookService;
+    @Autowired
+    private AuthorService authorService;
+
     @GetMapping("/book")
     public String showBooks(Model model) {
         model.addAttribute("books",bookService.getAllBooks());
@@ -58,6 +62,34 @@ public class BookController {
 
         bookService.deleteBook(id);
         return "redirect:/admin/indexBook";
+    }
+    @GetMapping("/admin/updateAuthors/{id}")
+    public String updateAuthors(@PathVariable("id") Long id,Model model) {
+        model.addAttribute("book", bookService.getBookById(id));
+        Iterable<Author> availableAuthors = authorService.findAuthorsNotInBook(id);
+        model.addAttribute("availableAuthors", availableAuthors);
+        return "admin/formUpdateAuthors";
+    }
+    @GetMapping("/admin/addAuthorToBook/{authorId}/{bookId}")
+    public String aggiungiAttore(@PathVariable("bookId") Long bookId,@PathVariable("authorId") Long authorId,Model model) {
+
+        this.bookService.addAuthorToBook(authorId,bookId);
+        Book book = this.bookService.getBookById(bookId);
+        Iterable<Author> availableAuthors = authorService.findAuthorsNotInBook(bookId);
+        model.addAttribute("availableAuthors", availableAuthors);
+        return "redirect:/admin/updateAuthors/"+bookId;
+    }
+
+    @GetMapping("/admin/removeAuthorFromBook/{authorId}/{bookId}")
+    public String removeActor(@PathVariable("authorId") Long authorId,@PathVariable("bookId") Long bookId,Model model) {
+
+        this.bookService.removeAuthorFromBook(authorId,bookId);
+        Book book = this.bookService.getBookById(bookId);
+        model.addAttribute("book",book);
+        Iterable<Author> availableAuthors = authorService.findAuthorsNotInBook(bookId);
+        model.addAttribute("availableAuthors", availableAuthors);
+        return "redirect:/admin/updateAuthors/"+bookId;
+
     }
 
 

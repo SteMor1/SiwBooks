@@ -35,4 +35,7 @@ public class AuthorService {
     public Author updateAuthor(Author author) {
         return authorRepository.save(author);
     }
+    public List<Author> findAuthorsNotInBook(Long bookId) {
+        return authorRepository.findAuthorsNotInBook(bookId);
+    }
 }

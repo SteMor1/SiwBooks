@@ -14,7 +14,7 @@ public class Book {
     private LocalDate publicationDate;
     @ManyToMany
     private List<Author> authors;
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book",cascade = CascadeType.REMOVE)
     private List<Review> reviews;
     public Long getId() {
         return id;

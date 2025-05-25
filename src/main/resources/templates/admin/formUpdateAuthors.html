@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aggiorna gli autori</title>
+</head>
+<body>
+<h1>Autori del Libro</h1>
+<div th:if="${book.authors.isEmpty()}">Nessun Autore per il Libro</div>
+<div class="movie-grid">
+    <div class="movie-card" th:each="author : ${book.authors}">
+        <div class="movie-info">
+            <a th:href="@{'/admin/removeAuthorFromBook/' + ${author.id} + '/' + ${book.id}}"
+               th:text="|${author.firstName} ${author.lastName} (${author.dateOfBirth})|">Autore</a>
+        </div>
+    </div>
+</div>
+
+<h1>Autori che puoi aggiungere</h1>
+<div th:if="${availableAuthors.isEmpty()}">Non ci sono artisti da aggiungere</div>
+<div class="movie-grid">
+    <div class="movie-card" th:each="author : ${availableAuthors}">
+        <div class="movie-info">
+            <a th:href="@{'/admin/addAuthorToBook/' + ${author.id} + '/' + ${book.id}}"
+               th:text="|${author.firstName} ${author.lastName} (${author.dateOfBirth})|">Autore</a>
+        </div>
+    </div>
+</div>
+<br></br>
+<div>
+    <a th:href="@{'/admin/formUpdateBook/'+ ${book.id}}">Torna al form </a>
+</div>
+</body>
+</html>
