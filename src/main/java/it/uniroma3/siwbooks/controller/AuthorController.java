@@ -17,6 +17,12 @@ import java.io.IOException;
 public class AuthorController {
     @Autowired
     private AuthorService authorService;
+
+    @GetMapping("/author")
+    public String showAuthor( Model model) {
+        model.addAttribute("authors", authorService.getAllAuthors());
+        return "authors";
+    }
     @GetMapping("/author/{id}")
     public String showAuthor(@PathVariable("id") Long id, Model model) {
         model.addAttribute("author", authorService.getAuthorById(id));
