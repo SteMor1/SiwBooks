@@ -36,5 +36,5 @@ insert into review (rating, author_id,book_id, id, title, text)
 values
     (5,1,1,nextval('review_seq'),'Review Positivia','Commento positivo');
 insert into credentials (id, user_id, password, role, username)
-    values (1,151,'$2a$10$qmUgXJRxhVNDIWqi/zhi3uXEsgdYkm3LHOWmwontED/4uXwi0prYS','DEFAULT','test'),
-           (2,201,'$2a$10$3a20w/4E8bvaI3M9QC6xseOyrabaUJFfnXWgEUx3iNzE4gDl1EZim','ADMIN','admin');
+    values (nextval('credentials_seq'),151,'$2a$10$qmUgXJRxhVNDIWqi/zhi3uXEsgdYkm3LHOWmwontED/4uXwi0prYS','DEFAULT','test'),
+           (nextval('credentials_seq'),201,'$2a$10$3a20w/4E8bvaI3M9QC6xseOyrabaUJFfnXWgEUx3iNzE4gDl1EZim','ADMIN','admin');

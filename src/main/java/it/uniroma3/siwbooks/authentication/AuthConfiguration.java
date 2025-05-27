@@ -23,7 +23,8 @@ import static it.uniroma3.siwbooks.model.Credentials.ADMIN_ROLE;
 @EnableWebSecurity
 public class AuthConfiguration {
 
-
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
     @Autowired
     private DataSource dataSource;
     @Autowired
@@ -57,6 +58,13 @@ public class AuthConfiguration {
                         .permitAll()
                         .defaultSuccessUrl("/success", true)
                         .failureUrl("/login?error=true"))
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/success", true)
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
+                        )
+                )
                 .logout(logout -> logout
                         // il logout è attivato con una richiesta GET a "/logout"
                         .logoutUrl("/logout")
