@@ -1,41 +1,45 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login</title>
-  <link rel="stylesheet" href="/css/styles2.css" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/styles2.css"/>
 </head>
 <body>
-  <div class="login-container">
+<div class="login-container">
     <h2 class="login-title">Accedi al tuo account</h2>
-    
+
     <!-- Modifica: Aggiungi action per il login -->
     <form class="login-form" method="POST" action="/login">
-      
-      <label for="username">Username</label>
-      <input type="text" id="username" name="username" required />
 
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" required />
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required/>
 
-      <button type="submit">Login</button>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required/>
+
+        <button type="submit">Login</button>
     </form>
 
     <!-- Mostra errore se il login fallisce -->
     <div th:if="${param.error != null}" class="error-message">
-      <p style="color:red;">Credenziali errate! Riprova.</p>
+        <p style="color:red;">Credenziali errate! Riprova.</p>
     </div>
 
     <div class="login-footer">
-      Non hai un account? <a href="/register">Registrati</a>
+        Non hai un account? <a href="/register">Registrati</a>
     </div>
     <div>
-      <a class="btn btn-outline-dark w-100 mt-3" href="/oauth2/authorization/google">
-        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo" style="height: 40px; margin-right: 8px;">
-      </a>
-
+        <a class="btn btn-outline-dark w-100 mt-3" href="/oauth2/authorization/google">
+            <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo"
+                 style="height: 40px; margin-right: 8px;">
+        </a>
+        <a class="btn btn-outline-dark w-100 mt-3" href="/oauth2/authorization/github">
+            <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub logo"
+                 style="height: 40px; margin-right: 8px;">
+        </a>
     </div>
-  </div>
+</div>
 </body>
 </html>
