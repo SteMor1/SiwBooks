@@ -22,6 +22,7 @@ public class Review {
     @Max(5)
     private int rating;
     @ManyToOne
+    @NotNull
     private User author;
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "book_id", nullable = false)
