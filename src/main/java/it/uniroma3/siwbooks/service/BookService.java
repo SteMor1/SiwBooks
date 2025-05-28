@@ -43,4 +43,7 @@ public class BookService {
     public void removeAuthorFromBook(Long authorId, Long bookId) {
         bookRepository.removeAuthorFromBook(authorId, bookId);
     }
+    public Iterable<Book> findByTitleStartingWith(String title) {
+        return bookRepository.findBookByTitleStartingWith(title);
+    }
 }

@@ -17,4 +17,7 @@ public interface BookRepository extends CrudRepository<Book, Long> {
     @Transactional
     @Query(nativeQuery=true, value = "DELETE from book_authors where authors_id= :authorId AND books_id= :bookId")
     public void removeAuthorFromBook(@Param("authorId") Long authorId, @Param("bookId") Long bookId);
+
+    @Query(nativeQuery=true, value = "SELECT * from book b where lower(b.title) LIKE lower(concat(:title,'%'))")
+    public Iterable<Book> findBookByTitleStartingWith(@Param("title") String title);
 }
