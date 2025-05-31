@@ -46,4 +46,10 @@ public class BookService {
     public Iterable<Book> findByTitleStartingWith(String title) {
         return bookRepository.findBookByTitleStartingWith(title);
     }
+    public Iterable<Book> findByAuthor(String author) {
+        return bookRepository.findBookByAuthor(author);
+    }
+    public Iterable<Book> findByYear(Integer yearFrom, Integer yearTo) {
+        return bookRepository.findBookByYear(yearFrom,yearTo);
+    }
 }

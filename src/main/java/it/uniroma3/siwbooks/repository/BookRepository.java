@@ -20,4 +20,10 @@ public interface BookRepository extends CrudRepository<Book, Long> {
 
     @Query(nativeQuery=true, value = "SELECT * from book b where lower(b.title) LIKE lower(concat(:title,'%'))")
     public Iterable<Book> findBookByTitleStartingWith(@Param("title") String title);
+
+    @Query(nativeQuery=true, value = "SELECT * FROM book b where b.id in( SELECT books_id from book_authors b_a where b_a.authors_id in (SELECT a.id from author a where (lower(a.first_name) LIKE lower(concat(:author,'%')) OR (lower(a.last_name) LIKE lower(concat(:author,'%'))))))")
+    public Iterable<Book> findBookByAuthor(@Param("author") String author);
+
+    @Query(nativeQuery=true, value = "SELECT * FROM book b where EXTRACT(YEAR FROM b.publication_date)>= :yearFrom AND EXTRACT(YEAR FROM b.publication_date)<=:yearTo")
+    public Iterable<Book> findBookByYear(@Param("yearFrom") Integer yearFrom, @Param("yearTo") Integer yearTo);
 }

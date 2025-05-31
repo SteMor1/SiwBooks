@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Year;
+
 @Controller
 public class BookController {
     @Autowired
@@ -17,8 +19,14 @@ public class BookController {
     private AuthorService authorService;
 
     @GetMapping("/book")
-    public String showBooks(@RequestParam(required = false) String title, Model model) {
-        if(title != null) {
+    public String showBooks(@RequestParam(required = false) String title,@RequestParam(required = false) String author, @RequestParam(required = false) Integer yearFrom, @RequestParam(required = false) Integer yearTo, Model model) {
+        if (yearFrom != null || yearTo != null) {
+            System.out.println("yearFrom: " + yearFrom+" yearTo: " + yearTo);
+           model.addAttribute("books", bookService.findByYear(yearFrom != null ? yearFrom : 0, yearTo != null ? yearTo : Year.now().getValue())); //Ricerco per anno : se yearFrom è null uso 0 se yearTo è null uso l'anno corrente
+        }else if(author != null) {
+            model.addAttribute("books", bookService.findByAuthor(author));
+        }
+        else if(title != null) {
             model.addAttribute("books", bookService.findByTitleStartingWith(title));
         }else{
             model.addAttribute("books",bookService.getAllBooks());
