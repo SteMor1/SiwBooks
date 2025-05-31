@@ -6,6 +6,7 @@ import it.uniroma3.siwbooks.controller.validator.CredentialsValidator;
 import it.uniroma3.siwbooks.model.Credentials;
 import it.uniroma3.siwbooks.service.CredentialsService;
 import it.uniroma3.siwbooks.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -50,7 +51,7 @@ public class AuthenticationController {
         return "index.html";
     }
     @PostMapping("/register")
-    public String registerPost(@Validated @ModelAttribute("credentials") Credentials credentials, BindingResult credentialsBindingResult, Model model , @ModelAttribute("confirm") String confirmPassword) {
+    public String registerPost(@Valid @ModelAttribute("credentials") Credentials credentials, BindingResult credentialsBindingResult, Model model , @ModelAttribute("confirm") String confirmPassword) {
         // TODO VALIDAZIONE
 
         //TODO VALUTARE SE DIVIDERE USER E CREDENTIALS

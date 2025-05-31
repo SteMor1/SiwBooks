@@ -8,6 +8,9 @@
 <body>
 <h1>Nuovo Autore</h1>
 <form th:action="@{/admin/author}" method="post" enctype="multipart/form-data" th:object="${author}">
+  <div>
+    <span class="error" th:if="${#fields.hasGlobalErrors()}" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></span>
+  </div>
   <label for="firstName">Nome:</label>
   <input type="text" id="firstName" th:field="*{firstName}" required /><br/><br/>
 

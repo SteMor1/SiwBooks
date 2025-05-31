@@ -1,13 +1,16 @@
 package it.uniroma3.siwbooks.controller;
 
+import it.uniroma3.siwbooks.controller.validator.AuthorValidator;
 import it.uniroma3.siwbooks.model.Author;
 import it.uniroma3.siwbooks.model.Image;
 import it.uniroma3.siwbooks.service.AuthorService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +20,8 @@ import java.io.IOException;
 public class AuthorController {
     @Autowired
     private AuthorService authorService;
+    @Autowired
+    private AuthorValidator authorValidator;
 
     @GetMapping("/author")
     public String showAuthor( Model model) {
@@ -45,7 +50,7 @@ public class AuthorController {
         return "admin/formNewAuthor";
     }
     @PostMapping("/admin/author")
-    public String saveAuthor(@ModelAttribute("author") Author author, @RequestParam("imageFile") MultipartFile imageFile) {
+    public String saveAuthor(@Valid @ModelAttribute("author") Author author, BindingResult authorBindingresults, @RequestParam("imageFile") MultipartFile imageFile) {
         //TODO Input Validation
         Image picture = new Image();
         try {
@@ -54,6 +59,10 @@ public class AuthorController {
             throw new RuntimeException(e);
         }
         author.setPicture(picture);
+        authorValidator.validate(author, authorBindingresults);
+        if(authorBindingresults.hasErrors()) {
+            return "admin/formNewAuthor";
+        }
         authorService.saveAuthor(author);
         return "redirect:/author/" + author.getId();
     }

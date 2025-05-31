@@ -6,6 +6,7 @@ import it.uniroma3.siwbooks.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -37,5 +38,9 @@ public class AuthorService {
     }
     public List<Author> findAuthorsNotInBook(Long bookId) {
         return authorRepository.findAuthorsNotInBook(bookId);
+    }
+
+    public Boolean authorExistsByNameAndLastNameAndDateOfBirth(String authorName, String lastName, LocalDate dateOfBirth) {
+        return authorRepository.existsByFirstNameAndLastNameAndDateOfBirth(authorName, lastName, dateOfBirth);
     }
 }

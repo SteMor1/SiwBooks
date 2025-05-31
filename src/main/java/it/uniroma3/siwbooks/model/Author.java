@@ -1,6 +1,8 @@
 package it.uniroma3.siwbooks.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -10,14 +12,14 @@ public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(nullable = false)
+    @NotBlank
     private String firstName;
-    @Column(nullable = false)
+    @NotBlank
     private String lastName;
-    @Column(nullable = false)
+    @NotNull
     private LocalDate dateOfBirth;
     private LocalDate dateOfDeath;
-    @Column(nullable = false)
+    @NotNull
     private String nationality;
 
     @OneToOne(cascade = CascadeType.ALL)
