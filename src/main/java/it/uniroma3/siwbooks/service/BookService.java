@@ -52,4 +52,7 @@ public class BookService {
     public Iterable<Book> findByYear(Integer yearFrom, Integer yearTo) {
         return bookRepository.findBookByYear(yearFrom,yearTo);
     }
+    public Boolean bookExistsByTitleAndAuthors(String title, Iterable<Author> authors) {
+        return bookRepository.existsByTitleAndAuthors(title,authors);
+    }
 }

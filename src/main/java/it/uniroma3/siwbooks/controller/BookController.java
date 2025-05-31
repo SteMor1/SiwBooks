@@ -4,6 +4,7 @@ import it.uniroma3.siwbooks.model.Author;
 import it.uniroma3.siwbooks.model.Book;
 import it.uniroma3.siwbooks.service.AuthorService;
 import it.uniroma3.siwbooks.service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,7 +46,7 @@ public class BookController {
         return "admin/formNewBook";
     }
     @PostMapping("/admin/book")
-    public String saveBook(@ModelAttribute("book") Book book) {
+    public String saveBook(@Valid @ModelAttribute("book") Book book) {
         //TODO Input Validation
         bookService.saveBook(book);
         return "redirect:/book/"+book.getId();

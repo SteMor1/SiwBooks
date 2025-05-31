@@ -1,11 +1,14 @@
 package it.uniroma3.siwbooks.repository;
 
+import it.uniroma3.siwbooks.model.Author;
 import it.uniroma3.siwbooks.model.Book;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface BookRepository extends CrudRepository<Book, Long> {
     @Modifying
@@ -26,4 +29,6 @@ public interface BookRepository extends CrudRepository<Book, Long> {
 
     @Query(nativeQuery=true, value = "SELECT * FROM book b where EXTRACT(YEAR FROM b.publication_date)>= :yearFrom AND EXTRACT(YEAR FROM b.publication_date)<=:yearTo")
     public Iterable<Book> findBookByYear(@Param("yearFrom") Integer yearFrom, @Param("yearTo") Integer yearTo);
+
+    Boolean existsByTitleAndAuthors(String title, Iterable<Author> authors);
 }
