@@ -24,8 +24,8 @@
     <!-- Username and Password for Credentials -->
 
     <label for="username">Username</label>
-    <input type="text" id="username" name="username" required th:field="*{username}" />
-
+    <input type="text" id="username" name="username"  th:field="*{username}" />
+    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
     <label for="password">Password</label>
     <input type="password" id="password" name="password" th:field="*{password}" required />
 

@@ -2,6 +2,7 @@ package it.uniroma3.siwbooks.controller;
 
 
 
+import it.uniroma3.siwbooks.controller.validator.CredentialsValidator;
 import it.uniroma3.siwbooks.model.Credentials;
 import it.uniroma3.siwbooks.service.CredentialsService;
 import it.uniroma3.siwbooks.service.UserService;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +26,8 @@ public class AuthenticationController {
     private CredentialsService credentialsService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CredentialsValidator credentialsValidator;
 
     @GetMapping("/register")
     public String register(Model model) {
@@ -46,11 +50,14 @@ public class AuthenticationController {
         return "index.html";
     }
     @PostMapping("/register")
-    public String registerPost(@ModelAttribute("credentials") Credentials credentials, BindingResult credentialsBindingResult, Model model ,@ModelAttribute("confirm") String confirmPassword) {
+    public String registerPost(@Validated @ModelAttribute("credentials") Credentials credentials, BindingResult credentialsBindingResult, Model model , @ModelAttribute("confirm") String confirmPassword) {
         // TODO VALIDAZIONE
 
         //TODO VALUTARE SE DIVIDERE USER E CREDENTIALS
-
+        this.credentialsValidator.validate(credentials, credentialsBindingResult);
+        if(credentialsBindingResult.hasErrors()) {
+            return "register";
+        }
         if(!confirmPassword.equals(credentials.getPassword())) {
             model.addAttribute("error", "Passwords do not match"); //TODO MOSTRARE ERRORE
             return register(model);
