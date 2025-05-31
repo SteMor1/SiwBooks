@@ -20,8 +20,8 @@ public class ReviewValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         Review review = (Review) target;
-        if(review.getAuthor() != null && review.getBook() != null && reviewService.existsByBookAndAuthor(review.getBook().getId(),review.getAuthor().getId())){
-            errors.reject("Review already exists");
+        if(review.getAuthor() != null &&review.getBook() != null && reviewService.existsByBookAndAuthor(review.getBook().getId(),review.getAuthor().getId())) {
+            errors.reject("review.duplicate");
         }
 
     }

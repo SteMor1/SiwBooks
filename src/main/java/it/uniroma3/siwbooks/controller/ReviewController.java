@@ -1,6 +1,7 @@
 package it.uniroma3.siwbooks.controller;
 
 
+import it.uniroma3.siwbooks.controller.validator.ReviewValidator;
 import it.uniroma3.siwbooks.model.Review;
 
 import it.uniroma3.siwbooks.service.BookService;
@@ -8,6 +9,7 @@ import it.uniroma3.siwbooks.service.CredentialsService;
 import it.uniroma3.siwbooks.service.ReviewService;
 
 import it.uniroma3.siwbooks.service.UserService;
+import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import jakarta.validation.constraints.Null;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,23 +34,32 @@ public class ReviewController {
     private BookService bookService;
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ReviewValidator reviewValidator;
+
     @GetMapping("/formNewReview/{book_id}")
     public String formNewReview(Model model, @PathVariable("book_id") Long id) {
-
+        Review review = new Review();
+        review.setBook(bookService.getBookById(id));
+        review.setAuthor(userService.getCurrentUser());
         model.addAttribute("book_id", id);
-        model.addAttribute("review", new Review());
+        model.addAttribute("review",review );
         return "formNewReview";
     }
     @PostMapping("/addReviewToBook/{book_id}")
-    public String addReviewToBook(@ModelAttribute("review") Review review, @PathVariable("book_id") Long book_id) {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        review.setAuthor(userService.getCurrentUser());
-        review.setBook(bookService.getBookById(book_id));
-        try {
-            reviewService.addReview(review);
-        }catch (ValidationException e) {
-            return "redirect:/book/" + book_id;
+    public String addReviewToBook(@Valid @ModelAttribute("review") Review review, BindingResult reviewBindingResult, @PathVariable("book_id") Long book_id) {
+
+        review.setAuthor(userService.getCurrentUser()); //Evito che un utente possa provare a modificare l'id utente tramite il form
+        this.reviewValidator.validate(review, reviewBindingResult);
+        if(reviewBindingResult.hasErrors()) {
+            boolean duplicate = reviewBindingResult.getGlobalErrors().stream().anyMatch(e -> "review.duplicate".equals(e.getCode()));
+            if (duplicate) {
+                return "redirect:/book/" + book_id;
+            }
+            return "formNewReview";
         }
+        reviewService.save(review);
         return "redirect:/book/" + book_id;
     }
     @GetMapping("/updateReview/{id}")
