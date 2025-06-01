@@ -19,8 +19,8 @@ public class BookValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         Book book = (Book) target;
-        if(book.getTitle() != null && !book.getTitle().isEmpty() && !book.getAuthors().isEmpty()&& bookService.bookExistsByTitleAndAuthors(book.getTitle(), book.getAuthors())) {
-            errors.rejectValue("book", "book.duplicate");
+        if(book.getTitle() != null && !book.getTitle().isEmpty() && bookService.bookExistsByTitleAndYear(book.getTitle(),book.getPublicationDate().getYear()))  {
+            errors.reject("book.duplicate");
         }
 
     }

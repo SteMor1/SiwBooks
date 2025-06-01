@@ -55,4 +55,7 @@ public class BookService {
     public Boolean bookExistsByTitleAndAuthors(String title, Iterable<Author> authors) {
         return bookRepository.existsByTitleAndAuthors(title,authors);
     }
+    public Boolean bookExistsByTitleAndYear(String title,Integer year) {
+        return bookRepository.existsByTitleAndPublicationYear(title,year);
+    }
 }

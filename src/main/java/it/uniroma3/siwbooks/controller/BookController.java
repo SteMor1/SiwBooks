@@ -1,5 +1,6 @@
 package it.uniroma3.siwbooks.controller;
 
+import it.uniroma3.siwbooks.controller.validator.BookValidator;
 import it.uniroma3.siwbooks.model.Author;
 import it.uniroma3.siwbooks.model.Book;
 import it.uniroma3.siwbooks.model.Image;
@@ -11,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +27,8 @@ public class BookController {
     private BookService bookService;
     @Autowired
     private AuthorService authorService;
+    @Autowired
+    private BookValidator bookValidator;
 
     @GetMapping("/book")
     public String showBooks(@RequestParam(required = false) String title,@RequestParam(required = false) String author, @RequestParam(required = false) Integer yearFrom, @RequestParam(required = false) Integer yearTo, Model model) {
@@ -53,10 +57,14 @@ public class BookController {
         return "admin/formNewBook";
     }
     @PostMapping("/admin/book")
-    public String saveBook(@Valid @ModelAttribute("book") Book book,@RequestParam("bookCover") MultipartFile bookCoverUpload,@RequestParam("otherImages") MultipartFile[] bookImagesUpload) {
+    public String saveBook(@Valid @ModelAttribute("book") Book book, BindingResult bookBindingResult, @RequestParam("bookCover") MultipartFile bookCoverUpload, @RequestParam("otherImages") MultipartFile[] bookImagesUpload) {
+
+        bookValidator.validate(book, bookBindingResult);
+        if(bookBindingResult.hasErrors()) {
+            return "admin/formNewBook";
+        }
         List<Image> bookImages = new ArrayList<Image>();
         Image bookCover = new Image();
-
         try {
             bookCover.setData(bookCoverUpload.getBytes());
         } catch (IOException e) {
@@ -87,7 +95,7 @@ public class BookController {
     }
     @GetMapping("/admin/formUpdateBook/{id}")
     public String updateAuthor(@PathVariable("id") Long id,Model model) {
-        model.addAttribute("book", bookService.getBookById(id));
+        model.addAttribute("book", bookService.getBookById(id)); //TODO AGGIUNGERE LA POSSIBILITÀ DI MODIFICARE LE IMMAGINI
         return "admin/formUpdateBook";
     }
     @PostMapping("/admin/updateBook")
