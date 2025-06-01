@@ -19,6 +19,12 @@ public class Book {
     private List<Author> authors;
     @OneToMany(mappedBy = "book",cascade = CascadeType.REMOVE)
     private List<Review> reviews;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Image coverImage;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Image> bookImages;
+
+
     public Long getId() {
         return id;
     }
@@ -55,5 +61,21 @@ public class Book {
     }
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public List<Image> getBookImages() {
+        return bookImages;
+    }
+
+    public void setBookImages(List<Image> bookImages) {
+        this.bookImages = bookImages;
+    }
+
+    public Image getCoverImage() {
+        return coverImage;
+    }
+
+    public void setCoverImage(Image coverImage) {
+        this.coverImage = coverImage;
     }
 }

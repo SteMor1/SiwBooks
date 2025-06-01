@@ -2,14 +2,19 @@ package it.uniroma3.siwbooks.controller;
 
 import it.uniroma3.siwbooks.model.Author;
 import it.uniroma3.siwbooks.model.Book;
+import it.uniroma3.siwbooks.model.Image;
 import it.uniroma3.siwbooks.service.AuthorService;
 import it.uniroma3.siwbooks.service.BookService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.Year;
 
 @Controller
@@ -46,7 +51,14 @@ public class BookController {
         return "admin/formNewBook";
     }
     @PostMapping("/admin/book")
-    public String saveBook(@Valid @ModelAttribute("book") Book book) {
+    public String saveBook(@Valid @ModelAttribute("book") Book book,@RequestParam("bookCover") MultipartFile bookCoverUpload) {
+        Image bookCover = new Image();
+        try {
+            bookCover.setData(bookCoverUpload.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        book.setCoverImage(bookCover);
         //TODO Input Validation
         bookService.saveBook(book);
         return "redirect:/book/"+book.getId();
@@ -101,7 +113,17 @@ public class BookController {
         return "redirect:/admin/updateAuthors/"+bookId;
 
     }
-
+    @GetMapping("/book/{id}/cover")
+    public ResponseEntity<byte[]> getBookCover(@PathVariable Long id) {
+        Book book = bookService.getBookById(id);
+        if (book == null || book.getCoverImage() == null) {
+            return ResponseEntity.notFound().build();
+        }
+        byte[] data = book.getCoverImage().getData();
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG) // o rileva dinamicamente
+                .body(data);
+    }
 
 
 }

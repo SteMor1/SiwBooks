@@ -18,9 +18,8 @@
       <a th:href="@{'/book/' + ${book.id}}" class="text-decoration-none text-reset">
         <div class="book-cover">
 
-          <img
-               src="/images/book_cover_placeholder.jpg"
-               alt="Placeholder copertina" />
+          <img th:src="@{'/book/' + ${book.id} + '/cover'}" alt="CopertinaLibro"
+               onerror="this.onerror=null;this.src='/images/book_cover_placeholder.jpg';">
         </div>
 
         <div class="book-info">
