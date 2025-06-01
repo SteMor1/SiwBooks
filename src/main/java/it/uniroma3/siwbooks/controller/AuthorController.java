@@ -51,7 +51,7 @@ public class AuthorController {
     }
     @PostMapping("/admin/author")
     public String saveAuthor(@Valid @ModelAttribute("author") Author author, BindingResult authorBindingresults, @RequestParam("imageFile") MultipartFile imageFile) {
-        //TODO Input Validation
+
         Image picture = new Image();
         try {
             picture.setData(imageFile.getBytes());
@@ -60,7 +60,7 @@ public class AuthorController {
         }
         author.setPicture(picture);
         authorValidator.validate(author, authorBindingresults);
-        if(authorBindingresults.hasErrors()) {
+        if(authorBindingresults.hasErrors()) {//TODO provare a rendere il controllo sulla duplicazione case-insensitive
             return "admin/formNewAuthor";
         }
         authorService.saveAuthor(author);
