@@ -32,17 +32,8 @@ public class BookController {
 
     @GetMapping("/book")
     public String showBooks(@RequestParam(required = false) String title,@RequestParam(required = false) String author, @RequestParam(required = false) Integer yearFrom, @RequestParam(required = false) Integer yearTo, Model model) {
-        if (yearFrom != null || yearTo != null) {
-            System.out.println("yearFrom: " + yearFrom+" yearTo: " + yearTo);
-           model.addAttribute("books", bookService.findByYear(yearFrom != null ? yearFrom : 0, yearTo != null ? yearTo : Year.now().getValue())); //Ricerco per anno : se yearFrom è null uso 0 se yearTo è null uso l'anno corrente
-        }else if(author != null) {
-            model.addAttribute("books", bookService.findByAuthor(author));
-        }
-        else if(title != null) {
-            model.addAttribute("books", bookService.findByTitleStartingWith(title));
-        }else{
-            model.addAttribute("books",bookService.getAllBooks());
-        }
+
+        model.addAttribute("books",bookService.findBooksByCriteria(title, author, yearFrom, yearTo));
         return "books";
     }
 
@@ -84,7 +75,6 @@ public class BookController {
 
         book.setBookImages(bookImages);
         book.setCoverImage(bookCover);
-        //TODO Input Validation
         bookService.saveBook(book);
         return "redirect:/book/"+book.getId();
     }

@@ -58,4 +58,8 @@ public class BookService {
     public Boolean bookExistsByTitleAndYear(String title,Integer year) {
         return bookRepository.existsByTitleAndPublicationYear(title,year);
     }
+    public Iterable<Book> findBooksByCriteria(String title,String author,Integer yearFrom, Integer yearTo){
+        
+        return bookRepository.findByCriteria(title,author, yearFrom,yearTo);
+    }
 }
