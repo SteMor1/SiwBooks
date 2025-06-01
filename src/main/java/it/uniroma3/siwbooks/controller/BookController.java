@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.Year;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class BookController {
@@ -51,13 +53,28 @@ public class BookController {
         return "admin/formNewBook";
     }
     @PostMapping("/admin/book")
-    public String saveBook(@Valid @ModelAttribute("book") Book book,@RequestParam("bookCover") MultipartFile bookCoverUpload) {
+    public String saveBook(@Valid @ModelAttribute("book") Book book,@RequestParam("bookCover") MultipartFile bookCoverUpload,@RequestParam("otherImages") MultipartFile[] bookImagesUpload) {
+        List<Image> bookImages = new ArrayList<Image>();
         Image bookCover = new Image();
+
         try {
             bookCover.setData(bookCoverUpload.getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        for (MultipartFile file : bookImagesUpload) {
+            if (!file.isEmpty()) {
+                Image img = new Image();
+                try {
+                img.setData(file.getBytes());
+                }catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                bookImages.add(img);
+            }
+        }
+
+        book.setBookImages(bookImages);
         book.setCoverImage(bookCover);
         //TODO Input Validation
         bookService.saveBook(book);
