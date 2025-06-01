@@ -3,16 +3,94 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 <div th:fragment="site-header">
-  <header class="top-bar">
-    <h1>SIWBooks</h1>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/book">Libri</a>
-      <a href="/author">Autori</a>
-      <a th:if="${userDetails==null}" href="/login">Login</a>
-      <a th:if="${userDetails!=null}" href="/myProfile" th:text="${userDetails.username}"></a>
-    </nav>
-  </header>
+    <header class="top-bar">
+        <h1>SIWBooks</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/book">Libri</a>
+            <a href="/author">Autori</a>
+            <a th:if="${userDetails==null}" href="/login">Login</a>
+            <a th:if="${userDetails!=null}" href="/myProfile" th:text="${userDetails.username}"></a>
+        </nav>
+    </header>
 </div>
+<div th:fragment="books-navbar">
+    <!-- FORM UNICO -->
+    <form th:action="@{/book}" method="get" id="bookSearchForm" >
+        <!-- NAVBAR -->
+        <nav class="navbar navbar-expand-lg custom-theme ">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">SIWBooks</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <a class="nav-link" href="/book">Libri</a>
+                        <a class="nav-link" href="/author">Autori</a>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <input type="text" class="form-control flex-grow-1" style="max-width: 400px; min-width: 0;"
+                               name="title" placeholder="Cerca titolo" th:value="${param.title}" />
+
+                        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#extraFilters" aria-expanded="false" aria-controls="extraFilters">
+                            <i class="bi bi-caret-down-fill"></i>
+                        </button>
+
+                        <button class="btn btn-outline-success" type="submit">Cerca</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- FILTRI EXTRA SOTTO LA NAVBAR -->
+        <div class="collapse container-fluid mt-2 " id="extraFilters"  th:classappend="${param.author} != null or ${param.yearFrom} != null or ${param.yearTo} != null ? ' show' : ''">
+            <div class="d-flex gap-3 align-items-center">
+                <input type="text" class="form-control" name="author" placeholder="Autore"
+                       th:value="${param.author}" />
+                <label>Da</label>
+                <input type="number" class="form-control" name="yearFrom" th:value="${param.yearFrom}" min="0" />
+                <label>a</label>
+                <input type="number" class="form-control" name="yearTo" th:value="${param.yearTo}" min="0" />
+            </div>
+        </div>
+    </form>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("bookSearchForm");
+
+            form.addEventListener("submit", function (e) {
+                // Rimuove i campi vuoti
+                const elements = form.querySelectorAll("input");
+                elements.forEach(input => {
+                    if (!input.value.trim()) {
+                        input.nameBackup = input.name; // salva il nome originale
+                        input.removeAttribute("name");
+                    }
+                });
+
+                // Dopo l'invio, ripristina i name per evitare problemi successivi
+                setTimeout(() => {
+                    elements.forEach(input => {
+                        if (input.name === "" && input.nameBackup) {
+                            input.name = input.nameBackup;
+                            delete input.nameBackup;
+                        }
+                    });
+                }, 100);
+            });
+        });
+    </script>
+</div>
+
+
+
+
+
 </body>
 </html>
