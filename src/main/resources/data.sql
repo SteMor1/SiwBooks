@@ -10,15 +10,15 @@ VALUES (nextval('book_seq'), 'Il nome della rosa', '1980-10-01'),
        (nextval('book_seq'), 'Il barone rampante', '1957-01-01'),
        (nextval('book_seq'), 'Le città invisibili', '1972-01-01');
 INSERT INTO author (id, first_name, last_name, date_of_birth, date_of_death, nationality)
-VALUES (nextval('author_seq'), 'Umberto', 'Eco', '1932-01-05', '2016-02-19', 'Italiano'),
-       (nextval('author_seq'), 'Primo', 'Levi', '1919-07-31', '1987-04-11', 'Italiano'),
-       (nextval('author_seq'), 'Giuseppe', 'Tomasi di Lampedusa', '1896-12-23', '1957-07-23', 'Italiano'),
-       (nextval('author_seq'), 'Carlo', 'Levi', '1900-11-29', '1975-01-04', 'Italiano'),
-       (nextval('author_seq'), 'Italo', 'Svevo', '1861-12-19', '1928-09-13', 'Italiano'),
-       (nextval('author_seq'), 'Alessandro', 'Manzoni', '1785-03-07', '1873-05-22', 'Italiano'),
+VALUES (nextval('author_seq'), 'Umberto', 'Eco', '1932-01-05', '2016-02-19', 'Italiana'),
+       (nextval('author_seq'), 'Primo', 'Levi', '1919-07-31', '1987-04-11', 'Italiana'),
+       (nextval('author_seq'), 'Giuseppe', 'Tomasi di Lampedusa', '1896-12-23', '1957-07-23', 'Italiana'),
+       (nextval('author_seq'), 'Carlo', 'Levi', '1900-11-29', '1975-01-04', 'Italiana'),
+       (nextval('author_seq'), 'Italo', 'Svevo', '1861-12-19', '1928-09-13', 'Italiana'),
+       (nextval('author_seq'), 'Alessandro', 'Manzoni', '1785-03-07', '1873-05-22', 'Italiana'),
        (nextval('author_seq'), 'Grazia', 'Deledda', '1871-09-28', '1936-08-15', 'Italiana'),
-       (nextval('author_seq'), 'Luigi', 'Pirandello', '1867-06-28', '1936-12-10', 'Italiano'),
-       (nextval('author_seq'), 'Italo', 'Calvino', '1923-10-15', '1985-09-19', 'Italiano');
+       (nextval('author_seq'), 'Luigi', 'Pirandello', '1867-06-28', '1936-12-10', 'Italiana'),
+       (nextval('author_seq'), 'Italo', 'Calvino', '1923-10-15', '1985-09-19', 'Italiana');
 
 
 INSERT INTO book_authors (books_id, authors_id)
