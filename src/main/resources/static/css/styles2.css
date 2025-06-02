@@ -9,7 +9,7 @@ body {
 
 /* TOP BAR (NAVBAR) */
 .top-bar {
-    background-color: #207a85; /* Colore esatto dello sketch */
+    background-color: #e68641; /* Colore esatto dello sketch */
     color: #fff;
     padding: 15px 30px;
     display: flex;
@@ -17,14 +17,23 @@ body {
     align-items: center;
 }
 .custom-theme{
-    background-color: #207a85; !important /* Colore esatto dello sketch */
+    background-color: #e68641;
+}
+.custom-theme .btn{
+    border: 1.5px solid #975928;
+}
+.custom-theme .btn:hover{
+    color: #ffcc00;
 }
 .custom-theme .nav-link{
     color: #fff;
 }
 .custom-theme .navbar-brand{
     color: #fff;
-    font-weight: 50
+    font-weight: bold;
+}
+.custom-theme .navbar-brand:hover{
+    color: #ffcc00;
 }
 
 
@@ -98,13 +107,13 @@ main.book-page {
 
 .author a {
     text-decoration: none;
-    color: #207a85;
+    color: #1a73e8;
     font-weight: 500;
     transition: color 0.2s ease;
 }
 
 .author a:hover {
-    color: #1a5e66;
+    color: #135aba;
     text-decoration: underline;
 }
 /* Pagina Autore */
@@ -220,7 +229,7 @@ main.book-page {
 }
 .btn-add-review {
     display: inline-block;
-    background-color: #3c91e6;
+    background-color: #41a0e6;
     color: white;
     padding: 6px 12px;
     text-decoration: none;
