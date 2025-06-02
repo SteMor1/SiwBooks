@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>Inserisci Libro</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
 </head>
 <body>
 <div class="container mt-4">
@@ -17,23 +17,51 @@
         </div>
         <div class="mb-3">
             <label for="title" class="form-label">Titolo:</label>
-            <input type="text" id="title" th:field="*{title}" class="form-control" required />
+            <input type="text" id="title" th:field="*{title}" class="form-control" required/>
         </div>
 
         <div class="mb-3">
             <label for="publicationDate" class="form-label">Data di pubblicazione:</label>
-            <input type="date" id="publicationDate" th:field="*{publicationDate}" class="form-control" required />
+            <input type="date" id="publicationDate" th:field="*{publicationDate}" class="form-control" required/>
         </div>
 
         <div class="mb-3">
             <label for="bookCover" class="form-label">Copertina (immagine):</label>
-            <input type="file" id="bookCover" name="bookCover" accept="image/*" class="form-control" />
+            <input type="file" id="bookCover" name="bookCover" accept="image/*" class="form-control"/>
         </div>
 
         <button type="button" id="btnSelectFiles" class="btn btn-secondary mb-3">Seleziona immagini</button>
-        <input type="file" id="otherImages" name="otherImages" accept="image/*" multiple style="display:none" />
+        <input type="file" id="otherImages" name="otherImages" accept="image/*" multiple style="display:none"/>
         <div id="preview" class="row gy-3"></div>
+        <div class="mb-3">
+            <label class="form-label">Autori selezionati:</label>
+            <div id="selectedAuthors" class="d-flex flex-wrap gap-2"></div>
+        </div>
+        <div class="mb-3">
 
+            <div th:each="author:${authors}" class="card sm-1 author-card" th:href="@{'/author/' + ${author.id}}" th:attr="data-author-id=${author.id}">
+                <div class="row g-4">
+                    <div class="col-sm-1">
+                        <img class="img-fluid rounded-start" th:src="@{'/author/' + ${author.id} + '/photo'}"
+                             alt="Foto autore"
+                             onerror="this.onerror=null;this.src='/images/avatar_placeholder.jpg';">
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="car-body">
+                            <h5 th:text="${author.firstName}+' '+${author.lastName}">
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="col-sm d-flex justify-content-end gap-2">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-success add-author-btn"
+                                    th:data-author-id="${author.id}"
+                                    th:data-author-name="${author.firstName + ' ' + author.lastName}"> Add </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <button type="submit" class="btn btn-primary mt-3">Salva</button>
     </form>
 
@@ -59,7 +87,7 @@
 
     function updatePreview() {
         preview.innerHTML = '';
-        if(filesList.length === 0){
+        if (filesList.length === 0) {
             preview.innerHTML = '<p class="text-muted">Nessuna immagine selezionata</p>';
             return;
         }
@@ -109,6 +137,67 @@
 
     updatePreview();
 </script>
+<script>
+    const selectedAuthorsContainer = document.getElementById('selectedAuthors');
+    const form = document.querySelector('form');
+    const selectedAuthors = new Map();
 
+    // Aggiungi listener a tutti i bottoni add-author-btn
+    document.querySelectorAll('.add-author-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const authorId = button.getAttribute('data-author-id');
+            const authorName = button.getAttribute('data-author-name');
+
+            if (!selectedAuthors.has(authorId)) {
+                selectedAuthors.set(authorId, authorName);
+                updateSelectedAuthors();
+                // 🔽 Nascondi tutta la card dell'autore
+                const card = document.querySelector(`.author-card[data-author-id="${authorId}"]`);
+                if (card) {
+                    card.style.display = 'none';
+                }
+            }
+        });
+    })
+
+    function updateSelectedAuthors() {
+        // Svuota il container
+        selectedAuthorsContainer.innerHTML = '';
+
+        // Rimuovi tutti gli input hidden precedenti (se ce ne sono)
+        form.querySelectorAll('input[name="authorIds"]').forEach(input => input.remove());
+
+        selectedAuthors.forEach((name, id) => {
+            // Crea un badge per mostrare l'autore selezionato
+            const badge = document.createElement('span');
+            badge.className = 'badge bg-primary d-flex align-items-center gap-2';
+            badge.style.userSelect = 'none';
+            badge.textContent = name;
+
+            // Bottone per rimuovere l'autore selezionato
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.className = 'btn-close btn-close-white btn-sm';
+            removeBtn.setAttribute('aria-label', 'Remove');
+            removeBtn.onclick = () => {
+                selectedAuthors.delete(id);
+                updateSelectedAuthors();
+                const card = document.querySelector(`.author-card[data-author-id="${id}"]`);
+                if (card) {
+                    card.style.display = '';
+                }
+            };
+
+            badge.appendChild(removeBtn);
+            selectedAuthorsContainer.appendChild(badge);
+            // Crea input hidden per inviare l'id al backend
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'authorIds';  // usa il nome che il backend si aspetta per gli autori
+            hiddenInput.value = id;
+            form.appendChild(hiddenInput);
+        });
+    }
+</script>
 </body>
 </html>
