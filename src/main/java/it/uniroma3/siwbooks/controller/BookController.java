@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,14 +43,16 @@ public class BookController {
     }
     @GetMapping("/admin/formNewBook")
     public String formNewBook(Model model) {
+        model.addAttribute("authors",authorService.getAllAuthors());
         model.addAttribute("book", new Book());
         return "admin/formNewBook";
     }
     @PostMapping("/admin/book")
-    public String saveBook(@Valid @ModelAttribute("book") Book book, BindingResult bookBindingResult, @RequestParam("bookCover") MultipartFile bookCoverUpload, @RequestParam("otherImages") MultipartFile[] bookImagesUpload) {
+    public String saveBook(@Valid @ModelAttribute("book") Book book, BindingResult bookBindingResult, @RequestParam("bookCover") MultipartFile bookCoverUpload, @RequestParam("otherImages") MultipartFile[] bookImagesUpload,Model model) {
 
         bookValidator.validate(book, bookBindingResult);
         if(bookBindingResult.hasErrors()) {
+            model.addAttribute("authors",authorService.getAllAuthors());
             return "admin/formNewBook";
         }
         List<Image> bookImages = new ArrayList<Image>();
@@ -108,7 +109,7 @@ public class BookController {
         return "admin/formUpdateAuthors";
     }
     @GetMapping("/admin/addAuthorToBook/{authorId}/{bookId}")
-    public String aggiungiAttore(@PathVariable("bookId") Long bookId,@PathVariable("authorId") Long authorId,Model model) {
+    public String addAuthor(@PathVariable("bookId") Long bookId, @PathVariable("authorId") Long authorId, Model model) {
 
         this.bookService.addAuthorToBook(authorId,bookId);
         Book book = this.bookService.getBookById(bookId);
@@ -118,7 +119,7 @@ public class BookController {
     }
 
     @GetMapping("/admin/removeAuthorFromBook/{authorId}/{bookId}")
-    public String removeActor(@PathVariable("authorId") Long authorId,@PathVariable("bookId") Long bookId,Model model) {
+    public String removeAuthor(@PathVariable("authorId") Long authorId, @PathVariable("bookId") Long bookId, Model model) {
 
         this.bookService.removeAuthorFromBook(authorId,bookId);
         Book book = this.bookService.getBookById(bookId);

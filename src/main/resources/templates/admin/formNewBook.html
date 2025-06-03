@@ -161,20 +161,20 @@
     })
 
     function updateSelectedAuthors() {
-        // Svuota il container
         selectedAuthorsContainer.innerHTML = '';
 
-        // Rimuovi tutti gli input hidden precedenti (se ce ne sono)
-        form.querySelectorAll('input[name="authorIds"]').forEach(input => input.remove());
+        // Rimuove gli input nascosti precedenti
+        form.querySelectorAll('input[name^="authors["]').forEach(input => input.remove());
 
+        let index = 0;
         selectedAuthors.forEach((name, id) => {
-            // Crea un badge per mostrare l'autore selezionato
+            // Mostra autore selezionato come badge
             const badge = document.createElement('span');
             badge.className = 'badge bg-primary d-flex align-items-center gap-2';
             badge.style.userSelect = 'none';
             badge.textContent = name;
 
-            // Bottone per rimuovere l'autore selezionato
+            // Bottone per rimuovere autore
             const removeBtn = document.createElement('button');
             removeBtn.type = 'button';
             removeBtn.className = 'btn-close btn-close-white btn-sm';
@@ -182,22 +182,22 @@
             removeBtn.onclick = () => {
                 selectedAuthors.delete(id);
                 updateSelectedAuthors();
-                const card = document.querySelector(`.author-card[data-author-id="${id}"]`);
-                if (card) {
-                    card.style.display = '';
-                }
             };
 
             badge.appendChild(removeBtn);
             selectedAuthorsContainer.appendChild(badge);
-            // Crea input hidden per inviare l'id al backend
+
+            // Crea input hidden: authors[0].id, authors[1].id, ...
             const hiddenInput = document.createElement('input');
             hiddenInput.type = 'hidden';
-            hiddenInput.name = 'authorIds';  // usa il nome che il backend si aspetta per gli autori
+            hiddenInput.name = `authors[${index}].id`;
             hiddenInput.value = id;
             form.appendChild(hiddenInput);
+
+            index++;
         });
     }
+
 </script>
 </body>
 </html>
