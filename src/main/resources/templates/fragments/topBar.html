@@ -18,7 +18,7 @@
     <!-- FORM UNICO -->
     <form th:action="@{/book}" method="get" id="bookSearchForm" >
         <!-- NAVBAR -->
-        <nav class="navbar navbar-expand-lg custom-theme ">
+        <nav class="navbar navbar-expand-lg custom-theme py-4 ">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">SIWBooks</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -46,7 +46,7 @@
                     </div>
                 </div>
             </div>
-            <div class="navbar-nav me-auto mb-0 mb-lg-0">
+            <div class="navbar-nav me-auto mb-0 mb-lg-0 me-5">
                 <a class="nav-link" th:if="${userDetails==null}" href="/login">Login</a>
                 <a class="nav-link" th:if="${userDetails!=null}" href="/myProfile" th:text="${userDetails.username}"></a>
             </div>

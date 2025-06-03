@@ -27,6 +27,7 @@ body {
 }
 .custom-theme .nav-link{
     color: #fff;
+    border-bottom: 2px solid transparent;
 }
 .custom-theme .navbar-brand{
     color: #fff;
