@@ -4,6 +4,7 @@ package it.uniroma3.siwbooks.controller;
 
 import it.uniroma3.siwbooks.controller.validator.CredentialsValidator;
 import it.uniroma3.siwbooks.model.Credentials;
+import it.uniroma3.siwbooks.service.BookService;
 import it.uniroma3.siwbooks.service.CredentialsService;
 import it.uniroma3.siwbooks.service.UserService;
 import jakarta.validation.Valid;
@@ -29,6 +30,8 @@ public class AuthenticationController {
     private UserService userService;
     @Autowired
     private CredentialsValidator credentialsValidator;
+    @Autowired
+    private BookService bookService;
 
     @GetMapping("/register")
     public String register(Model model) {
@@ -45,10 +48,7 @@ public class AuthenticationController {
     public String defaultAfterLogin(Model model) {
         UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Credentials credentials = credentialsService.getCredentialsByUsername(userDetails.getUsername());
-        if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
-            return "admin/indexAdmin.html";
-        }
-        return "index.html";
+        return "redirect:/";
     }
     @PostMapping("/register")
     public String registerPost(@Valid @ModelAttribute("credentials") Credentials credentials, BindingResult credentialsBindingResult, Model model , @ModelAttribute("confirm") String confirmPassword) {
@@ -70,6 +70,7 @@ public class AuthenticationController {
     public String index(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
+            model.addAttribute("popularBooks",bookService.getAllBooks());//TODO ORDINO IN BASE ALLE RECENSIONI
             return "index.html";
         }
         else {
@@ -79,6 +80,7 @@ public class AuthenticationController {
                 return "admin/indexAdmin.html";
             }
         }
+        model.addAttribute("popularBooks",bookService.getAllBooks());//TODO ORDINO IN BASE ALLE RECENSIONI
         return "index.html";
     }
 
