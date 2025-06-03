@@ -37,7 +37,7 @@ public interface BookRepository extends CrudRepository<Book, Long> {
 
     @Query(nativeQuery=true, value = "SELECT * from book b where " +
             "(:title IS NULL OR lower(b.title) LIKE lower(concat(:title,'%')))" + //CONDIZIONE SU TITOLO (OR null salta il controllo se il campo è null)
-            "AND(:author IS NULL OR b.id in( SELECT books_id from book_authors b_a where b_a.authors_id in (SELECT a.id from author a where (lower(a.first_name) LIKE lower(concat(:author,'%')) OR (lower(a.last_name) LIKE lower(concat(:author,'%')))))))" //CONDIZIONE SU AUTORE
+            "AND(:author IS NULL OR b.id in( SELECT books_id from book_authors b_a where b_a.authors_id in (SELECT a.id from author a where (concat(lower(a.first_name),' ',lower(a.last_name)) LIKE lower(concat(:author,'%')) OR (concat(lower(a.last_name),' ',lower(a.first_name)) LIKE lower(concat(:author,'%')))))))" //CONDIZIONE SU AUTORE
             +"AND (:yearFrom IS NULL OR EXTRACT(YEAR FROM b.publication_date)>= :yearFrom) " //CONDIZIONE su yearFrom
             +"AND (:yearTo IS NULL OR EXTRACT(YEAR FROM b.publication_date)<=:yearTo)") //CONDIZIONE SU yearTO
     Iterable<Book> findByCriteria(@Param("title")String title,@Param("author")String author,@Param("yearFrom") Integer yearFrom, @Param("yearTo") Integer yearTo);
