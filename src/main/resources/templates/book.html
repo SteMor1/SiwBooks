@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <title>Scheda libro</title>
-    <link rel="stylesheet" href="/css/styles2.css" />
+    <link rel="stylesheet" href="/css/styles2.css"/>
+
 </head>
 <body>
 
@@ -30,22 +34,44 @@
     <section class="book-reviews">
         <h2>Recensioni</h2>
         <div class="reviews" th:if="${book.getReviews().isEmpty()}">Non ci sono recensioni per questo libro</div>
-        <div class="add-review">
+        <div th:if="${userReview==null}" class="add-review">
             <a th:href="@{'/formNewReview/' + ${book.id}}" class="btn-add-review">Aggiungi Recensione</a>
         </div>
         <div class="reviews-list">
-            <div class="review" th:each="review : ${book.getReviews()}">
-                <div class="menu-button-container" >
+
+            <div class="review" th:if="${userReview!=null}">
+                <div class="menu-button-container">
                     <button class="menu-button" onclick="toggleMenu(this)">⋮</button>
                     <div class="menu-dropdown hidden">
-                        <a th:href="@{'/updateReview/' + ${review.id}}">Modifica</a>
-                        <a th:href="@{'/deleteReview/' + ${review.id}}" onclick="return confirm('Eliminare la recensione?')">Elimina</a>
+                        <a th:href="@{'/updateReview/' + ${userReview.id}}">Modifica</a>
+                        <a th:href="@{'/deleteReview/' + ${userReview.id}}"
+                           onclick="return confirm('Eliminare la recensione?')">Elimina</a>
+                    </div>
+                </div>
+                <p class="review-title" th:text="${userReview.getTitle()}">Titolo recensione</p>
+                <div class="review-meta">
+                    <span class="review-author" th:text="${userReview.author.email}">Nome Autore</span>
+                    <span class="review-stars"
+                          th:utext="${'★'.repeat(userReview.getRating()) + '☆'.repeat(5 - userReview.getRating())}">
+                    ★★★★☆
+                </span>
+                </div>
+                <p class="review-text" th:text="${userReview.getText()}">Testo recensione</p>
+            </div>
+
+            <div class="review" th:each="review : ${bookReviews}">
+                <div sec:authorize="hasAuthority('ADMIN')" class="menu-button-container">
+                    <button class="menu-button" onclick="toggleMenu(this)">⋮</button>
+                    <div class="menu-dropdown hidden">
+                        <a th:href="@{'/deleteReview/' + ${review.id}}"
+                           onclick="return confirm('Eliminare la recensione?')">Elimina</a>
                     </div>
                 </div>
                 <p class="review-title" th:text="${review.getTitle()}">Titolo recensione</p>
                 <div class="review-meta">
                     <span class="review-author" th:text="${review.author.email}">Nome Autore</span>
-                    <span class="review-stars" th:utext="${'★'.repeat(review.getRating()) + '☆'.repeat(5 - review.getRating())}">
+                    <span class="review-stars"
+                          th:utext="${'★'.repeat(review.getRating()) + '☆'.repeat(5 - review.getRating())}">
                     ★★★★☆
                 </span>
                 </div>
@@ -55,7 +81,6 @@
     </section>
 
 </main>
-
 
 
 <script>

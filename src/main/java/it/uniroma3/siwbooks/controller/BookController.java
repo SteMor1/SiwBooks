@@ -1,11 +1,11 @@
 package it.uniroma3.siwbooks.controller;
 
 import it.uniroma3.siwbooks.controller.validator.BookValidator;
-import it.uniroma3.siwbooks.model.Author;
-import it.uniroma3.siwbooks.model.Book;
-import it.uniroma3.siwbooks.model.Image;
+import it.uniroma3.siwbooks.model.*;
 import it.uniroma3.siwbooks.service.AuthorService;
 import it.uniroma3.siwbooks.service.BookService;
+import it.uniroma3.siwbooks.service.ReviewService;
+import it.uniroma3.siwbooks.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -27,6 +27,10 @@ public class BookController {
     @Autowired
     private AuthorService authorService;
     @Autowired
+    private ReviewService reviewService;
+    @Autowired
+    private UserService userService;
+    @Autowired
     private BookValidator bookValidator;
 
     @GetMapping("/book")
@@ -38,6 +42,17 @@ public class BookController {
 
     @GetMapping("/book/{id}")
     public String getBook(@PathVariable("id") Long id, Model model) {
+        List<Review> bookReviews = reviewService.getBookReviews(id);
+        User currentUser = userService.getCurrentUser();
+        Review userReview = null;
+        if(currentUser != null) {
+            userReview = bookReviews.stream()
+                    .filter(review -> review.getAuthor().equals(currentUser))
+                    .findFirst().orElse(null); //OTTENGO REVIEW UTENTE
+        }
+        model.addAttribute("userReview", userReview);
+        model.addAttribute("bookReviews", bookReviews.stream().filter(review -> !review.getAuthor().equals(currentUser)));// INVIO SOLO QUELLE CHE NON SONO DELL'UTENTE forse migliorabile
+
         model.addAttribute("book",bookService.getBookById(id));
         return "book";
     }
