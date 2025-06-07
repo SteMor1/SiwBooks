@@ -24,6 +24,12 @@ public class BookService {
     public Book updateBook(Book book) {
         Book bookToUpdate = bookRepository.findById(book.getId()).orElse(null);
         if (bookToUpdate != null) {
+            if(book.getCoverImage() != null) {//EVITO DI AGGIORNARE CON IMMAGINI VUOTE(PROBLEMATICA LEGATA AL FORM)
+                bookToUpdate.setCoverImage(book.getCoverImage());
+            }
+            if(!book.getBookImages().isEmpty()) {//EVITO DI AGGIORNARE CON IMMAGINI VUOTE(PROBLEMATICA LEGATA AL FORM)
+                bookToUpdate.setBookImages(book.getBookImages());
+            }
             bookToUpdate.setTitle(book.getTitle());
             bookToUpdate.setPublicationDate(book.getPublicationDate());
             return bookRepository.save(bookToUpdate);

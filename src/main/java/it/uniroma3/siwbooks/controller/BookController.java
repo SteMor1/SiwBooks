@@ -90,7 +90,35 @@ public class BookController {
         return "admin/formUpdateBook";
     }
     @PostMapping("/admin/updateBook")
-    public String updateAuthor(@ModelAttribute("book") Book book, Model model) {
+    public String updateAuthor(@ModelAttribute("book") Book book, @RequestParam("bookCover") MultipartFile bookCoverUpload,@RequestParam("otherImages") MultipartFile[] bookImagesUpload, Model model) {
+        Image bookCover = new Image();
+        List<Image> bookImages = new ArrayList <Image>();
+        if(!bookCoverUpload.isEmpty()) {
+            try {
+                bookCover.setData(bookCoverUpload.getBytes());
+                book.setCoverImage(bookCover);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if(bookImagesUpload.length > 0) {
+            System.out.println("Immagini da aggiungere: "+bookImagesUpload.length);
+            for (MultipartFile file : bookImagesUpload) {
+                if (!file.isEmpty()) {
+                    Image img = new Image();
+                    try {
+                        img.setData(file.getBytes());
+                        bookImages.add(img);
+                    }catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+
+                }
+            }
+            book.setBookImages(bookImages);
+        }
+
         bookService.updateBook(book);
         return "redirect:/admin/indexBook";
     }
@@ -136,6 +164,20 @@ public class BookController {
             return ResponseEntity.notFound().build();
         }
         byte[] data = book.getCoverImage().getData();
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG) // o rileva dinamicamente
+                .body(data);
+    }
+    @GetMapping("/book/{book_id}/images/{img_id}")
+    public ResponseEntity<byte[]> getBookImage(@PathVariable("book_id") Long book_id,@PathVariable("img_id") Integer img_id) {
+        Book book = bookService.getBookById(book_id);
+
+        if (book == null || img_id>=book.getBookImages().size()) {
+
+            return ResponseEntity.notFound().build();
+        }
+
+        byte[] data = book.getBookImages().get(img_id).getData();
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_JPEG) // o rileva dinamicamente
                 .body(data);
