@@ -83,7 +83,14 @@ public class AuthorController {
         return "admin/formUpdateAuthor";
     }
     @PostMapping("/admin/updateAuthor")
-    public String updateAuthor(@ModelAttribute("author") Author author, Model model) {
+    public String updateAuthor(@ModelAttribute("author") Author author, Model model,@RequestParam("imageFile") MultipartFile imageFile) {
+        Image picture = new Image();
+        try {
+            picture.setData(imageFile.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        author.setPicture(picture);
         authorService.updateAuthor(author);
         return "redirect:/admin/indexAuthor";
     }

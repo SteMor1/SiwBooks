@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<body>
+<div th:fragment="authorFormFragment(title,buttonText,action)">
+<div class="container">
+  <h1 class="mb-4 mt-4" th:text="${title}"></h1>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <!-- Colonna immagine -->
+        <div class="col-md-4 col-lg-3 mb-4">
+          <div class="text-center">
+            <div class="ratio ratio-1x1 mb-3" style="max-width: 250px; margin: 0 auto;">
+              <img id="author-picture" th:src="@{'/author/' + ${author.id} + '/photo'}"
+                   class="img-thumbnail rounded-circle"
+                   style="object-fit: cover; width: 100%; height: 100%;"
+                   alt="Foto Autore"
+                   onerror="this.onerror=null;this.src='/images/avatar_placeholder.jpg';">
+            </div>
+            <input form="updateForm" class="form-control" type="file" id="imageFile"
+                   name="imageFile" accept="image/*" />
+            <small class="text-muted">Seleziona una nuova foto</small>
+          </div>
+        </div>
+
+        <!-- Colonna form -->
+        <div class="col-md-8 col-lg-9">
+          <form id="updateForm" th:action="${action}" th:object="${author}"
+                method="post" enctype="multipart/form-data">
+
+            <input type="hidden" th:field="*{id}" />
+
+            <!-- Nome e Cognome sulla stessa riga -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="firstName" class="form-label">Nome:</label>
+                <input type="text" id="firstName" th:field="*{firstName}"
+                       class="form-control" required />
+              </div>
+              <div class="col-md-6">
+                <label for="lastName" class="form-label">Cognome:</label>
+                <input type="text" id="lastName" th:field="*{lastName}"
+                       class="form-control" required />
+              </div>
+            </div>
+
+            <!-- Date sulla stessa riga -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="dateOfBirth" class="form-label">Data di nascita:</label>
+                <input type="date" id="dateOfBirth" name="dateOfBirth"
+                       class="form-control"
+                       th:value="${#temporals.format(author.dateOfBirth, 'yyyy-MM-dd')}"
+                       required />
+              </div>
+              <div class="col-md-6">
+                <label for="dateOfDeath" class="form-label">Data di morte (opzionale):</label>
+                <input type="date" id="dateOfDeath" name="dateOfDeath"
+                       class="form-control"
+                       th:value="${author.dateOfDeath != null ? #temporals.format(author.dateOfDeath, 'yyyy-MM-dd') : ''}" />
+              </div>
+            </div>
+
+            <!-- Nazionalità -->
+            <div class="row mb-3">
+              <div class="col-12">
+                <label for="nationality" class="form-label">Nazionalità:</label>
+                <input type="text" id="nationality" th:field="*{nationality}"
+                       class="form-control" required />
+              </div>
+            </div>
+
+            <!-- Bottone submit -->
+            <div class="row">
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary btn-lg w-100">
+                  <i class="fas fa-save me-2" th:text="${buttonText}"></i>
+                </button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const imageInput = document.getElementById("imageFile");
+    const authorPicture = document.getElementById("author-picture");
+
+    imageInput.addEventListener("change", function (event) {
+      const file = event.target.files[0];
+      if (file) {
+        console.log("Immagine selezionata:", file.name);
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          authorPicture.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        // Ripristina l'immagine originale se nessun file è selezionato
+        authorPicture.src = "[[${'/author/' + author.id + '/photo'}]]";
+      }
+    });
+  });
+</script>
+</div>
+</body>
+
+</html>
+
+
+
