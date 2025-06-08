@@ -7,28 +7,34 @@
     <link rel="stylesheet" href="/css/styles2.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
 </head>
 
 <body>
 <div th:replace="fragments/topBar ::books-navbar"></div>
 
 <main>
+    <div class="container mt-4">  <!-- Cambiato da container-fluid a container -->
+        <div th:if="${books.isEmpty()}" class="text-center text-muted py-5">
+            <i class="bi bi-book" style="font-size: 3rem;"></i>
+            <h3>Nessun libro presente nel sistema</h3>
+        </div>
 
-    <div class="container-fluid text-center mt-4">
-        <div th:if="${books.isEmpty()}">Nessun libro presente nel sistema</div>
-        <div class="row g-4">
+        <div class="row g-4 justify-content-start">  <!-- justify-content-start per allineare i libri a sinistra -->
             <div class="col-auto" th:each="book : ${books}">
-                <div class="card h-100" style="width: 250px; margin: 0 auto;">
+                <div class="card h-100 shadow-sm book-card" style="width: 250px;">
                     <a th:href="@{'/book/' + ${book.id}}" class="text-decoration-none text-reset">
-                        <img class="card-img-top"
-                             th:src="@{'/book/' + ${book.id} + '/cover'}"
-                             alt="CopertinaLibro"
-                             onerror="this.onerror=null;this.src='/images/book_cover_placeholder.jpg';"
-                             style="object-fit: cover;">
+                        <!-- Container immagine con aspect ratio più simile ai libri reali -->
+                        <div class="card-img-container"
+                             style="max-width: 250px; aspect-ratio: 2/3; overflow: hidden;">
+                            <img class="card-img-top"
+                                 th:src="@{'/book/' + ${book.id} + '/cover'}"
+                                 alt="Copertina del libro"
+                                 style="object-fit: cover; width: 100%; height: 100%;"
+                                 onerror="this.onerror=null;this.src='/images/book_cover_placeholder.jpg';">
+                        </div>
                         <div class="card-body">
-                            <h2 class="card-title" th:text="${book.title}">Titolo</h2>
-                            <p class="card-text" th:text="${#temporals.format(book.publicationDate, 'yyyy')}">Anno</p>
+                            <h5 class="card-title" th:text="${book.title}">Titolo</h5>
+                            <p class="card-text text-muted" th:text="${#temporals.format(book.publicationDate, 'yyyy')}">Anno</p>
                         </div>
                     </a>
                 </div>
@@ -36,6 +42,7 @@
         </div>
     </div>
 </main>
-</body>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
