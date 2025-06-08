@@ -1,5 +1,6 @@
 package it.uniroma3.siwbooks.service;
 
+import it.uniroma3.siwbooks.model.Credentials;
 import it.uniroma3.siwbooks.model.User;
 import it.uniroma3.siwbooks.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -44,5 +45,13 @@ public class UserService {
         }
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         return credentialsService.getCredentialsByUsername(userDetails.getUsername()).getUser();
+    }
+    public Credentials getCurrentUserCredentials() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            return null;
+        }
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        return credentialsService.getCredentialsByUsername(userDetails.getUsername());
     }
 }

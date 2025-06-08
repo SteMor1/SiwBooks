@@ -87,7 +87,25 @@
         </div>
 
     </div>
-
+    <div class="review" th:if="${userReview!=null}">Add commentMore actions
+        <div class="menu-button-container">
+            <button class="menu-button" onclick="toggleMenu(this)">⋮</button>
+            <div class="menu-dropdown hidden">
+                <a th:href="@{'/updateReview/' + ${userReview.id}}">Modifica</a>
+                <a th:href="@{'/deleteReview/' + ${userReview.id}}"
+                   onclick="return confirm('Eliminare la recensione?')">Elimina</a>
+            </div>
+        </div>
+        <p class="review-title" th:text="${userReview.getTitle()}">Titolo recensione</p>
+        <div class="review-meta">
+            <span class="review-author" th:text="${userReview.author.email}">Nome Autore</span>
+            <span class="review-stars"
+                  th:utext="${'★'.repeat(userReview.getRating()) + '☆'.repeat(5 - userReview.getRating())}">
+                    ★★★★☆
+                </span>
+        </div>
+        <p class="review-text" th:text="${userReview.getText()}">Testo recensione</p>
+    </div>
     <div class="review mb-2" th:each="review : ${bookReviews}">
         <div sec:authorize="hasAuthority('ADMIN')" class="menu-button-container">
             <button class="menu-button" onclick="toggleMenu(this)">⋮</button>
