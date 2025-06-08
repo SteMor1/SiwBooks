@@ -1,34 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Aggiorna gli autori</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
-<body>
-<h1>Autori del Libro</h1>
-<div th:if="${book.authors.isEmpty()}">Nessun Autore per il Libro</div>
-<div class="movie-grid">
-    <div class="movie-card" th:each="author : ${book.authors}">
-        <div class="movie-info">
-            <a th:href="@{'/admin/removeAuthorFromBook/' + ${author.id} + '/' + ${book.id}}"
-               th:text="|${author.firstName} ${author.lastName} (${author.dateOfBirth})|">Autore</a>
-        </div>
-    </div>
-</div>
 
-<h1>Autori che puoi aggiungere</h1>
-<div th:if="${availableAuthors.isEmpty()}">Non ci sono artisti da aggiungere</div>
-<div class="movie-grid">
-    <div class="movie-card" th:each="author : ${availableAuthors}">
-        <div class="movie-info">
-            <a th:href="@{'/admin/addAuthorToBook/' + ${author.id} + '/' + ${book.id}}"
-               th:text="|${author.firstName} ${author.lastName} (${author.dateOfBirth})|">Autore</a>
+<body>
+<div class="container">
+    <!-- Autori del libro -->
+    <div class="mt-4">
+        <h2>Aggiorna gli autori del libro</h2>
+    </div>
+    <div class="card mb-4 mt-4">
+        <div class="card-header">
+            <h4 class="mb-0">Autori del Libro</h4>
+        </div>
+        <div class="card-body">
+            <div th:if="${book.authors.isEmpty()}" class="text-muted">
+                <i class="bi bi-info-circle"></i> Nessun autore per questo libro
+            </div>
+            <div th:each="author : ${book.authors}"
+                 class="d-flex justify-content-between align-items-center border-bottom py-2">
+                <div>
+                    <strong th:text="|${author.firstName} ${author.lastName}|">Nome Cognome</strong>
+                    <br>
+                    <small class="text-muted" th:text="${#temporals.format(author.dateOfBirth,'yyyy')}">Data di nascita</small>
+                    <small th:if="${author.dateOfDeath!=null}" class="text-muted" th:text="'- '+${#temporals.format(author.dateOfDeath,'yyyy')}">
+                        - Data di morte</small>
+                </div>
+                <a th:href="@{'/admin/removeAuthorFromBook/' + ${author.id} + '/' + ${book.id}}"
+                   class="btn btn-outline-danger btn-sm" onclick="return confirm('Rimuovere l\'autore?')"
+                   title="Rimuovi autore">
+                    <i class="bi bi-person-dash-fill"></i>
+                </a>
+            </div>
         </div>
     </div>
-</div>
-<br></br>
-<div>
-    <a th:href="@{'/admin/formUpdateBook/'+ ${book.id}}">Torna al form </a>
+    <div class="card mt-4 mb-4">
+        <div class="card-header">
+            <h4 class="mb-0">Autori che puoi aggiungere</h4>
+        </div>
+        <div class="card-body">
+            <div th:if="${availableAuthors.isEmpty()}" class="text-muted">
+                <i class="bi bi-info-circle"></i> Non ci sono autori da aggiungere
+            </div>
+            <div th:each="author : ${availableAuthors}"
+                 class="d-flex justify-content-between align-items-center border-bottom py-2">
+                <div>
+                    <strong th:text="|${author.firstName} ${author.lastName}|">Nome Cognome</strong>
+                    <br>
+                    <small class="text-muted" th:text="${#temporals.format(author.dateOfBirth,'yyyy')}">Data di nascita</small>
+                    <small th:if="${author.dateOfDeath!=null}" class="text-muted" th:text="'- '+${#temporals.format(author.dateOfDeath,'yyyy')}">
+                        - Data di morte</small>
+                </div>
+                <a id="addButton" th:href="@{'/admin/addAuthorToBook/' + ${author.id} + '/' + ${book.id}}"
+                   class="btn btn-outline-success btn-sm">
+                    <i class="bi bi-person-plus-fill text-success"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <a class="btn btn-primary" th:href="@{'/admin/formUpdateBook/'+ ${book.id}}"><i
+            class="fas fa-arrow-left me-2"></i>Torna al form </a>
 </div>
 </body>
+
 </html>
