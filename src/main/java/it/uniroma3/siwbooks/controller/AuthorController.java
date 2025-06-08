@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class AuthorController {
@@ -24,8 +25,15 @@ public class AuthorController {
     private AuthorValidator authorValidator;
 
     @GetMapping("/author")
-    public String showAuthor( Model model) {
-        model.addAttribute("authors", authorService.getAllAuthors());
+    public String showAuthor(@RequestParam(required = false) String authorName,Model model) {
+        Iterable<Author> authors ;
+        if (authorName != null) {
+            authors = authorService.findByName(authorName);
+        }else {
+            authors=authorService.getAllAuthors();
+        }
+        model.addAttribute("authors", authors);
+
         return "authors";
     }
     @GetMapping("/author/{id}")
@@ -67,8 +75,14 @@ public class AuthorController {
         return "redirect:/author/" + author.getId();
     }
     @GetMapping("/admin/indexAuthor")
-    public String indexAuthor(Model model) {
-        model.addAttribute("authors",authorService.getAllAuthors());
+    public String indexAuthor(@RequestParam(required = false) String authorName,Model model) {
+        Iterable<Author> authors ;
+        if (authorName != null) {
+            authors = authorService.findByName(authorName);
+        }else {
+            authors=authorService.getAllAuthors();
+        }
+        model.addAttribute("authors", authors);
         return "admin/indexAuthor";
     }
     @GetMapping("/admin/deleteAuthor/{id}")

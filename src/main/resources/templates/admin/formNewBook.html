@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/styles2.css">
 </head>
 <body>
-<div th:replace="fragments/navBar :: navbarFragment"></div>
+<div th:replace="fragments/navBar ::navbarFragment(searchField=false,searchItem='',searchMsg='')"></div>
 <div th:replace="/fragments/bookFragments :: bookForm(title='Aggiungi Libro',addAuthorBtn=false,confirmButtonText='Aggiungi Libro',action='/admin/book')"></div>
 
 <div class="container mt-4">

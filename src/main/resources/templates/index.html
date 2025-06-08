@@ -9,12 +9,12 @@
 </head>
 <body>
 
-<div th:replace="fragments/navBar :: navbarFragment"></div>
+<div th:replace="fragments/navBar ::navbarFragment(searchField=false,searchItem='',searchMsg='')"></div>
 
 <main>
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-auto">
+            <div class="col-auto mt-4">
                 <h2>Benvenuto!</h2>
             </div>
 

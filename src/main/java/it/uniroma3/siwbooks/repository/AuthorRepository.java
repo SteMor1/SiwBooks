@@ -14,4 +14,6 @@ public interface AuthorRepository extends CrudRepository<Author, Long> {
 
     boolean existsByFirstNameAndLastNameAndDateOfBirth(String firstName, String lastName, LocalDate dateOfBirth);
 
+    @Query(nativeQuery = true , value = "select * from author a where (concat(lower(a.first_name),' ',lower(a.last_name)) LIKE lower(concat(:author,'%')) OR (concat(lower(a.last_name),' ',lower(a.first_name)) LIKE lower(concat(:author,'%'))))")
+    List<Author> findByName(@Param("author")String name);
 }

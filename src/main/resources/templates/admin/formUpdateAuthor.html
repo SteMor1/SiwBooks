@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/styles2.css">
 </head>
 <body>
-<div th:replace="fragments/navBar :: navbarFragment"></div>
+<div th:replace="fragments/navBar ::navbarFragment(searchField=false,searchItem='',searchMsg='')"></div>
 <div th:replace="~{fragments/authorFragments :: authorFormFragment(title='Aggiorna Autore',buttonText='Aggiorna Autore',action='/admin/updateAuthor')}"></div>
 </body>
 </html>
