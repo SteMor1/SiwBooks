@@ -58,8 +58,10 @@ public class BookController {
     }
     @GetMapping("/admin/formNewBook")
     public String formNewBook(Model model) {
+        Book b=new Book();
+        b.setBookImages(new ArrayList<>()); //TODO VERIFICARE CHE SIA UN APPROCCIO CORRETTO
         model.addAttribute("authors",authorService.getAllAuthors());
-        model.addAttribute("book", new Book());
+        model.addAttribute("book", b);
         return "admin/formNewBook";
     }
     @PostMapping("/admin/book")
@@ -67,6 +69,7 @@ public class BookController {
 
         bookValidator.validate(book, bookBindingResult);
         if(bookBindingResult.hasErrors()) {
+            book.setBookImages(new ArrayList<>());//TODO VERIFICARE CHE SIA UN APPROCCIO CORRETTO
             model.addAttribute("authors",authorService.getAllAuthors());
             return "admin/formNewBook";
         }

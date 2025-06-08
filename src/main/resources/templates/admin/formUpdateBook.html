@@ -80,11 +80,13 @@
 
 
                     <!-- Input allineato al fondo -->
-                    <div class="mt-auto">
-                        <button class="btn" id="add-img">Aggiungi immagine</button>
+                    <div class="mt-auto" style="max-width: 250px;">
+                        <button class="btn btn-outline-primary w-100 mb-3" id="add-img">
+                            <i class="fas fa-plus me-2"></i>Aggiungi Immagine
+                        </button>
                         <input form="updateForm" class="form-control mb-2" type="file" id="bookCover"
                                name="bookCover" accept="image/*" style="display:none" />
-                        <small class="text-muted" id="inputHint">
+                        <small class="text-muted text-center d-block" id="inputHint">
                             <i class="fas fa-images me-1"></i>
                             <span id="hintText">Seleziona foto per il carosello</span>
                         </small>
