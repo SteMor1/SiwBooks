@@ -98,8 +98,8 @@ public class BookController {
         return "redirect:/book/"+book.getId();
     }
     @GetMapping("/admin/indexBook")
-    public String indexBook(Model model) {
-        model.addAttribute("books", bookService.getAllBooks());
+    public String indexBook(@RequestParam(required = false) String title,@RequestParam(required = false) String author, @RequestParam(required = false) Integer yearFrom, @RequestParam(required = false) Integer yearTo, Model model) {
+        model.addAttribute("books",bookService.findBooksByCriteria(title, author, yearFrom, yearTo));
         return "admin/indexBook";
     }
     @GetMapping("/admin/formUpdateBook/{id}")
