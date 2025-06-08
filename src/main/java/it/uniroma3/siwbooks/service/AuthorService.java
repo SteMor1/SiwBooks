@@ -43,4 +43,7 @@ public class AuthorService {
     public Boolean authorExistsByNameAndLastNameAndDateOfBirth(String authorName, String lastName, LocalDate dateOfBirth) {
         return authorRepository.existsByFirstNameAndLastNameAndDateOfBirth(authorName, lastName, dateOfBirth);
     }
+    public List<Author> findByName(String name) {
+        return authorRepository.findByName(name);
+    }
 }
