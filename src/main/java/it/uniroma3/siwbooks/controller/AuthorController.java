@@ -97,14 +97,25 @@ public class AuthorController {
         return "admin/formUpdateAuthor";
     }
     @PostMapping("/admin/updateAuthor")
-    public String updateAuthor(@ModelAttribute("author") Author author, Model model,@RequestParam("imageFile") MultipartFile imageFile) {
+    public String updateAuthor(@Valid @ModelAttribute("author") Author author,BindingResult authorBindingresults, Model model,@RequestParam("imageFile") MultipartFile imageFile) {
         Image picture = new Image();
-        try {
-            picture.setData(imageFile.getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if(!imageFile.isEmpty()) {
+            try {
+                picture.setData(imageFile.getBytes());
+                author.setPicture(picture);//EVITO DI AGGIORNARE CON IMMAGINI VUOTE(PROBLEMATICA LEGATA AL FORM)
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
-        author.setPicture(picture);
+        Author originalAuthor = authorService.getAuthorById(author.getId());
+        if(!author.getFirstName().equals(originalAuthor.getFirstName()) && !author.getLastName().equals(originalAuthor.getLastName())) {
+            authorValidator.validate(author, authorBindingresults);//AL MOMENTO NON MOSTRA ERRORI SE DATA DI NASCITA DOPO MORTE TODO FIXARE
+        }
+        if(authorBindingresults.hasErrors()) {//TODO provare a rendere il controllo sulla duplicazione case-insensitive
+
+            return "admin/formUpdateAuthor";
+        }
+
         authorService.updateAuthor(author);
         return "redirect:/admin/indexAuthor";
     }

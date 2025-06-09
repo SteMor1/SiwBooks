@@ -124,6 +124,7 @@
                 </label>
                 <input type="date" id="publicationDate" name="publicationDate" class="form-control"
                        th:value="${#temporals.format(book.publicationDate, 'yyyy-MM-dd')}" required />
+                <div class="text-danger mt-1" th:if="${#fields.hasErrors('publicationDate')}" th:errors="*{publicationDate}"></div>
               </div>
 
               <div class="mb-3">

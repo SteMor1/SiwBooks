@@ -24,6 +24,12 @@ public class AuthorValidator implements Validator {
        if(author.getFirstName()!=null && author.getLastName()!=null && !author.getFirstName().isEmpty() && !author.getLastName().isEmpty() && authorService.authorExistsByNameAndLastNameAndDateOfBirth(author.getFirstName(), author.getLastName(), author.getDateOfBirth())) {
            errors.reject("author.duplicate");
        }
+       if(author.getDateOfBirth()!=null&&author.getDateOfDeath()!=null) {
+           if(author.getDateOfDeath().isBefore(author.getDateOfBirth())) {
+               errors.rejectValue("dateOfDeath","author.dateOfDeath.beforeBirth");
+               errors.rejectValue("dateOfBirth","author.dateOfBirth.afterDeath");
+           }
+       }
 
     }
 }

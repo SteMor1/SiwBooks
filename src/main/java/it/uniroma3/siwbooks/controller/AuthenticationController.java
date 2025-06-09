@@ -55,14 +55,15 @@ public class AuthenticationController {
         // TODO VALIDAZIONE
 
         //TODO VALUTARE SE DIVIDERE USER E CREDENTIALS
+        if(!confirmPassword.equals(credentials.getPassword())) {
+            model.addAttribute("passwordError", "Le password non corrispondono"); //TODO MOSTRARE ERRORE
+        }
+
         this.credentialsValidator.validate(credentials, credentialsBindingResult);
-        if(credentialsBindingResult.hasErrors()) {
+        if(credentialsBindingResult.hasErrors() || model.containsAttribute("passwordError")) {
             return "register";
         }
-        if(!confirmPassword.equals(credentials.getPassword())) {
-            model.addAttribute("error", "Passwords do not match"); //TODO MOSTRARE ERRORE
-            return register(model);
-        }
+
         credentialsService.saveCredentials(credentials);
         return "redirect:login";
     }

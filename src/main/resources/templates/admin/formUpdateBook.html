@@ -10,7 +10,7 @@
 </head>
 
 <body>
-<div th:replace="~{fragments/navBar :: navbarFragment}"></div>
+<div th:replace="fragments/navBar ::navbarFragment(searchField=false,searchItem='',searchMsg='')"></div>
 <div class="container">
     <h1 class="mb-4 mt-4" th:text="${title}">Aggiorna informazioni Libro</h1>
     <div class="card shadow">
@@ -98,9 +98,14 @@
 
                 <!-- Seconda colonna: Form con flexbox -->
                 <div class="col-md-8 d-flex flex-column">
+
                     <form id="updateForm" th:action="@{'/admin/updateBook'}" th:object="${book}" method="post"
                           enctype="multipart/form-data" class="flex-grow-1 d-flex flex-column">
-
+                        <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+                            <div class="mb-0">
+                                <a th:each="err : ${#fields.globalErrors()}" th:text="${err}"></a>
+                            </div>
+                        </div>
                         <input type="hidden" th:field="*{id}" />
 
                         <div class="mb-3">
@@ -114,7 +119,9 @@
                             </label>
                             <input type="date" id="publicationDate" name="publicationDate" class="form-control"
                                    th:value="${#temporals.format(book.publicationDate, 'yyyy-MM-dd')}" required />
+                            <div class="text-danger mt-1" th:if="${#fields.hasErrors('publicationDate')}" th:errors="*{publicationDate}"></div>
                         </div>
+
 
                         <div class="mb-3">
                             <div class="alert alert-info d-flex align-items-center">

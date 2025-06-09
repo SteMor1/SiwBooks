@@ -34,7 +34,18 @@ public class AuthorService {
 
     }
     public Author updateAuthor(Author author) {
-        return authorRepository.save(author);
+        Author authorToUpdate = authorRepository.findById(author.getId()).orElse(null);
+        if(authorToUpdate!=null) {
+            if(author.getPicture()!=null) {
+                authorToUpdate.setPicture(author.getPicture());//EVITO DI AGGIORNARE CON IMMAGINI VUOTE(PROBLEMATICA LEGATA AL FORM)
+            }
+            authorToUpdate.setDateOfBirth(author.getDateOfBirth());
+            authorToUpdate.setFirstName(author.getFirstName());
+            authorToUpdate.setLastName(author.getLastName());
+            authorToUpdate.setDateOfDeath(author.getDateOfDeath());
+            return authorRepository.save(authorToUpdate);
+        }
+       return null;
     }
     public List<Author> findAuthorsNotInBook(Long bookId) {
         return authorRepository.findAuthorsNotInBook(bookId);

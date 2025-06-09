@@ -103,14 +103,24 @@ public class BookController {
         return "admin/indexBook";
     }
     @GetMapping("/admin/formUpdateBook/{id}")
-    public String updateAuthor(@PathVariable("id") Long id,Model model) {
+    public String formUpdateBook(@PathVariable("id") Long id,Model model) {
         model.addAttribute("book", bookService.getBookById(id)); //TODO AGGIUNGERE LA POSSIBILITÀ DI MODIFICARE LE IMMAGINI
         return "admin/formUpdateBook";
     }
     @PostMapping("/admin/updateBook")
-    public String updateAuthor(@ModelAttribute("book") Book book, @RequestParam("bookCover") MultipartFile bookCoverUpload,@RequestParam("otherImages") MultipartFile[] bookImagesUpload, Model model) {
+    public String updateBook(@Valid @ModelAttribute("book") Book book, BindingResult bookBindingResult, @RequestParam("bookCover") MultipartFile bookCoverUpload,@RequestParam("otherImages") MultipartFile[] bookImagesUpload, Model model) {
         Image bookCover = new Image();
         List<Image> bookImages = new ArrayList <Image>();
+        Book original = bookService.getBookById(book.getId()); //NON SO SE VA FATTO COSI
+        if(!book.getTitle().equals(original.getTitle()) || !book.getPublicationDate().equals(original.getPublicationDate())) {
+            bookValidator.validate(book, bookBindingResult); // SE IL TITOLO O LA DATA DI PUBBLICAZIONE SONO STATI CAMBIATI EFFETTUO LA VALIDAZIONE COMPLETA -> SENZA QUESTO CONTROLLO AVREI PROBLEMI (IL Libro verebbe rifiutato se non si modifica il titolo)
+        }
+        if(bookBindingResult.hasErrors()) {
+
+            book.setBookImages(original.getBookImages()); // PER RISOLVERE IL PROBLEMA DELLE IMMAGINI
+            System.out.println(bookBindingResult.getAllErrors());
+            return "admin/formUpdateBook";
+        }
         if(!bookCoverUpload.isEmpty()) {
             try {
                 bookCover.setData(bookCoverUpload.getBytes());

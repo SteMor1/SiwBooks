@@ -3,6 +3,7 @@ package it.uniroma3.siwbooks.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,7 +18,9 @@ public class Author {
     @NotBlank
     private String lastName;
     @NotNull
+    @PastOrPresent(message = "{dateOfBirth.pastOrPresent}")
     private LocalDate dateOfBirth;
+    @PastOrPresent(message = "{dateOfDeath.pastOrPresent}")
     private LocalDate dateOfDeath;
     @NotNull
     private String nationality;

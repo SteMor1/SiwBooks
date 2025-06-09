@@ -30,7 +30,11 @@
         <div class="col-md-8 col-lg-9">
           <form id="updateForm" th:action="${action}" th:object="${author}"
                 method="post" enctype="multipart/form-data">
-
+            <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+              <div class="mb-0">
+                <a th:each="err : ${#fields.globalErrors()}" th:text="${err}"></a>
+              </div>
+            </div>
             <input type="hidden" th:field="*{id}" />
 
             <!-- Nome e Cognome sulla stessa riga -->
@@ -55,12 +59,14 @@
                        class="form-control"
                        th:value="${#temporals.format(author.dateOfBirth, 'yyyy-MM-dd')}"
                        required />
+                <div class="text-danger mt-1" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="${author.dateOfBirth}"></div>
               </div>
               <div class="col-md-6">
                 <label for="dateOfDeath" class="form-label">Data di morte (opzionale):</label>
                 <input type="date" id="dateOfDeath" name="dateOfDeath"
                        class="form-control"
                        th:value="${author.dateOfDeath != null ? #temporals.format(author.dateOfDeath, 'yyyy-MM-dd') : ''}" />
+                <div class="text-danger mt-1" th:if="${#fields.hasErrors('dateOfDeath')}" th:errors="${author.dateOfDeath}"></div>
               </div>
             </div>
 

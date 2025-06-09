@@ -1,7 +1,9 @@
 package it.uniroma3.siwbooks.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,9 +13,10 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotNull
+    @NotEmpty
     private String title;
     @NotNull
+    @PastOrPresent(message = "La data di pubblicazione non può essere nel futuro")
     private LocalDate publicationDate;
     @ManyToMany
     private List<Author> authors;
