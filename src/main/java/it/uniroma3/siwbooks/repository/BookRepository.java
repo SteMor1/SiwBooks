@@ -41,4 +41,8 @@ public interface BookRepository extends CrudRepository<Book, Long> {
             +"AND (:yearFrom IS NULL OR EXTRACT(YEAR FROM b.publication_date)>= :yearFrom) " //CONDIZIONE su yearFrom
             +"AND (:yearTo IS NULL OR EXTRACT(YEAR FROM b.publication_date)<=:yearTo)") //CONDIZIONE SU yearTO
     Iterable<Book> findByCriteria(@Param("title")String title,@Param("author")String author,@Param("yearFrom") Integer yearFrom, @Param("yearTo") Integer yearTo);
+
+
+    @Query(nativeQuery = true, value = "select b.*  from book b left join review r on b.id=r.book_id group by b.id order by count(CASE WHEN r.id is not null THEN 1 END) DESC LIMIT :n")//COSI ANCHE SE NON HANNO RECENSIONI DOVREBBERO RIMANERE, CASE DENTRO LA COUNT PER FAR SI CHE L'USO DEL LEFT JOIN NON CREI PROBLEMI
+    List<Book> findNMostCommented(@Param("n") int n); //LIST MANTIENE L'ordinamento
 }

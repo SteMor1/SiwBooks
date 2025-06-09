@@ -50,7 +50,10 @@ public class BookService {
         bookRepository.removeAuthorFromBook(authorId, bookId);
     }
 
-
+    public List<Book> findNMostCommentedBooks(int n){
+        System.out.println("NMost Commented Books "+n);
+        return bookRepository.findNMostCommented(n);
+    }
     public Boolean bookExistsByTitleAndYear(String title,Integer year) {
         return bookRepository.existsByTitleAndPublicationYear(title,year);
     }

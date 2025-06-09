@@ -56,7 +56,7 @@ public class AuthenticationController {
 
         //TODO VALUTARE SE DIVIDERE USER E CREDENTIALS
         if(!confirmPassword.equals(credentials.getPassword())) {
-            model.addAttribute("passwordError", "Le password non corrispondono"); //TODO MOSTRARE ERRORE
+            model.addAttribute("passwordError", "Le password non corrispondono");
         }
 
         this.credentialsValidator.validate(credentials, credentialsBindingResult);
@@ -71,7 +71,7 @@ public class AuthenticationController {
     public String index(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
-            model.addAttribute("popularBooks",bookService.getAllBooks());//TODO ORDINO IN BASE ALLE RECENSIONI
+            model.addAttribute("popularBooks",bookService.findNMostCommentedBooks(5));//TODO ORDINO IN BASE ALLE RECENSIONI
             return "index.html";
         }
         else {
@@ -81,7 +81,7 @@ public class AuthenticationController {
                 return "admin/indexAdmin.html";
             }
         }
-        model.addAttribute("popularBooks",bookService.getAllBooks());//TODO ORDINO IN BASE ALLE RECENSIONI
+        model.addAttribute("popularBooks",bookService.findNMostCommentedBooks(5));//TODO ORDINO IN BASE ALLE RECENSIONI
         return "index.html";
     }
 
