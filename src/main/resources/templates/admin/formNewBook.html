@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/css/styles2.css">
 </head>
-<body>
+<body class="pt-nav-bar">
 <div th:replace="fragments/navBar ::navbarFragment(searchField=false,searchItem='',searchMsg='')"></div>
 <div th:replace="/fragments/bookFragments :: bookForm(title='Aggiungi Libro',addAuthorBtn=false,confirmButtonText='Aggiungi Libro',action='/admin/book')"></div>
 
