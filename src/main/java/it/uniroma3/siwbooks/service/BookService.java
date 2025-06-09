@@ -49,18 +49,8 @@ public class BookService {
     public void removeAuthorFromBook(Long authorId, Long bookId) {
         bookRepository.removeAuthorFromBook(authorId, bookId);
     }
-    public Iterable<Book> findByTitleStartingWith(String title) {
-        return bookRepository.findBookByTitleStartingWith(title);
-    }
-    public Iterable<Book> findByAuthor(String author) {
-        return bookRepository.findBookByAuthor(author);
-    }
-    public Iterable<Book> findByYear(Integer yearFrom, Integer yearTo) {
-        return bookRepository.findBookByYear(yearFrom,yearTo);
-    }
-    public Boolean bookExistsByTitleAndAuthors(String title, Iterable<Author> authors) {
-        return bookRepository.existsByTitleAndAuthors(title,authors);
-    }
+
+
     public Boolean bookExistsByTitleAndYear(String title,Integer year) {
         return bookRepository.existsByTitleAndPublicationYear(title,year);
     }
