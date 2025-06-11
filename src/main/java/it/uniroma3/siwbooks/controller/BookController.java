@@ -104,7 +104,7 @@ public class BookController {
     }
     @GetMapping("/admin/formUpdateBook/{id}")
     public String formUpdateBook(@PathVariable("id") Long id,Model model) {
-        model.addAttribute("book", bookService.getBookById(id)); //TODO AGGIUNGERE LA POSSIBILITÀ DI MODIFICARE LE IMMAGINI
+        model.addAttribute("book", bookService.getBookById(id));
         return "admin/formUpdateBook";
     }
     @PostMapping("/admin/updateBook")
