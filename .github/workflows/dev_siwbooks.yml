@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Java version
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
           java-version: '21'
@@ -28,7 +28,7 @@ jobs:
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
-      - name: Upload artifact for deployment job
+      - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
           name: java-app
@@ -45,7 +45,7 @@ jobs:
       contents: read
 
     steps:
-      - name: Download artifact from build job
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: java-app
@@ -57,6 +57,19 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_B879717D72D04ABCBA32414FEA7C751C }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_EC294265129E4060B74211699A9BEF96 }}
 
+      - name: Set environment variables in Azure App Service
+        run: |
+          az webapp config appsettings set --name SIWBooks \
+            --resource-group SIW \
+            --settings \
+              DB_HOST=${{ secrets.DB_HOST }} \
+              DB_USERNAME=${{ secrets.DB_USERNAME }} \
+              DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+              GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} \
+              GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} \
+              GITHUB_CLIENT_ID=${{ secrets.GITHUB_CLIENT_ID }} \
+              GITHUB_CLIENT_SECRET=${{ secrets.GITHUB_CLIENT_SECRET }}
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
@@ -64,9 +77,3 @@ jobs:
           app-name: 'SIWBooks'
           slot-name: 'Production'
           package: '*.jar'
-          app-settings: |
-            SPRING_DATASOURCE_URL=jdbc:postgresql://${{ secrets.DB_HOST }}:5432/siw-books
-            SPRING_DATASOURCE_USERNAME=${{ secrets.DB_USERNAME }}
-            SPRING_DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }}
-            SERVER_PORT=80
-            SPRING_JPA_HIBERNATE_DDL_AUTO=create
