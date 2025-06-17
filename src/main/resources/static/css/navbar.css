@@ -1,0 +1,32 @@
+.custom-theme{
+    background-color: #e68641;
+}
+.custom-theme .btn{
+    border: 1.5px solid #975928;
+}
+.custom-theme .btn:hover{
+    color: #ffcc00;
+}
+.custom-theme .nav-link{
+    color: #fff;
+    border-bottom: 2px solid transparent;
+}
+.custom-theme .navbar-brand{
+    color: #fff;
+    font-weight: bold;
+}
+.custom-theme .navbar-brand:hover{
+    color: #ffcc00;
+}
+
+
+.custom-theme .nav-link:hover {
+    color: #ffcc00;
+    border-bottom: 2px solid #ffcc00;
+}
+.custom-theme .btn {
+    color: #fff;
+}
+.pt-nav-bar{
+    padding-top: 86px;
+}

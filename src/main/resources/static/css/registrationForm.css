@@ -36,3 +36,6 @@
 .login-footer a:hover {
     text-decoration: underline;
 }
+.form-plus-button {
+    font-size: 3rem;
+}
