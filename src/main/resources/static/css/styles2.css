@@ -244,7 +244,7 @@ main.book-page {
 .btn-add-review:hover {
     background-color: #256fc3;
 }
-/*FORM RECENSIONI */
+/*FORM RECENSIONI (ASSEGNATO)*/
 .review-form-container {
     max-width: 600px;
     margin: 40px auto;
@@ -290,7 +290,7 @@ main.book-page {
 .btn-submit:hover {
     background-color: #256fc3;
 }
-/*LOGIN PAGE*/
+/*LOGIN PAGE (ASSEGNATO)*/
 .login-container {
     background-color: #ffffff;
     padding: 40px;

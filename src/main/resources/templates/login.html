@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Login</title>
-    <link rel="stylesheet" href="/css/styles2.css"/>
+    <link rel="stylesheet" href="/css/login.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
@@ -25,7 +25,7 @@
 
     <!-- Mostra errore se il login fallisce -->
     <div th:if="${param.error != null}" class="error-message">
-        <p style="color:red;">Credenziali errate! Riprova.</p>
+        <p>Credenziali errate! Riprova.</p>
     </div>
 
     <div class="login-footer">
@@ -33,12 +33,10 @@
     </div>
     <div class="d-flex justify-content-center" >
         <a class="btn w-20 mt-3" href="/oauth2/authorization/google">
-            <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo"
-                 style="height: 40px; margin-right: 8px;">
+            <img class="OAuth2-logos" src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo">
         </a>
         <a class="btn w-20 mt-3" href="/oauth2/authorization/github">
-            <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub logo"
-                 style="height: 40px; margin-right: 8px;">
+            <img class="OAuth2-logos" src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub logo">
         </a>
     </div>
 </div>
