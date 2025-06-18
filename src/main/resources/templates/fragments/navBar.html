@@ -44,7 +44,7 @@
         <!--Provo a mantenere nella finestra di input l'ultima ricerca se l'effetto è fastidioso rimuovere th:value-->
 
         <button class="btn" type="submit">Cerca</button>
-        <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#extraFilters"
+        <button th:if="${searchItem}=='title'" class="btn" type="button"  data-bs-toggle="collapse" data-bs-target="#extraFilters"
                 aria-expanded="false" aria-controls="extraFilters">
             <i class="bi bi-caret-down-fill"></i>
         </button>

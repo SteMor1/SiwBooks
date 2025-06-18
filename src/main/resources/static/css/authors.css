@@ -1,0 +1,18 @@
+.author-icon {
+    font-size: 3rem;
+}
+
+.card {
+    width: 250px;
+}
+
+.card-img-container {
+    height: 250px;
+}
+
+.card-img-container img {
+    width: 230px;
+    height: 230px;
+    object-fit: cover;
+    border-radius: 50%;
+}
