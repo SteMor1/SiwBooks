@@ -1,0 +1,12 @@
+.book-carousel-image {
+    max-width: 250px;
+    aspect-ratio: 2/3;
+}
+
+.book-cover {
+    object-fit: cover;
+}
+
+.button-bar {
+    max-width: 250px;
+}
