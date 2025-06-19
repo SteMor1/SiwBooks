@@ -39,7 +39,7 @@
 
 <div th:fragment="searchBarFragment(searchItem,searchMsg)">
     <form method="get" id="searchForm" class="d-flex align-items-center gap-2 mb-0">
-        <input type="text" class="form-control flex-grow-1" style="max-width: 400px; min-width: 0;"
+        <input type="text" class="form-control flex-grow-1 search-bar-input"
                th:name="${searchItem}" th:placeholder="${searchMsg}" th:value="${param[__${searchItem}__]}" />
         <!--Provo a mantenere nella finestra di input l'ultima ricerca se l'effetto è fastidioso rimuovere th:value-->
 

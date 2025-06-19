@@ -30,3 +30,14 @@
 .pt-nav-bar{
     padding-top: 86px;
 }
+
+/*INPUT FIELDS*/
+.search-bar-input{
+    max-width: 400px; min-width: 0;
+}
+.year-search{
+    width: 100px;
+}
+.author-search{
+    width: 200px;
+}
