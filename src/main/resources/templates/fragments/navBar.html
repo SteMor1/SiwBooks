@@ -1,0 +1,111 @@
+<!-- fragments.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="/css/styles2.css" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<body>
+
+<!-- fragments.html -->
+<nav th:fragment="navbarFragment(searchField,searchItem,searchMsg)"
+     class="navbar navbar-expand-lg custom-theme py-2 fixed-top">
+
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">SIWBooks</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav me-auto mb-0 mb-lg-0">
+                <a class="nav-link" href="/book">Libri</a>
+                <a class="nav-link" href="/author">Autori</a>
+            </div>
+
+            <!-- Sposto il blocco login qui, con ms-auto per spingerlo a destra -->
+            <div class="navbar-nav mb-0 mb-lg-0 ms-auto">
+                <div th:if="${searchField}">
+                    <div th:replace="~{fragments/navBar :: searchBarFragment(${searchItem},${searchMsg})}"></div>
+                </div>
+                <a class="nav-link" th:if="${userDetails==null}" href="/login">Login</a>
+                <a class="nav-link" th:if="${userDetails!=null}" href="/myProfile"
+                   th:text="${userDetails.username}"></a>
+            </div>
+        </div>
+    </div>
+
+</nav>
+
+<div th:fragment="searchBarFragment(searchItem,searchMsg)">
+    <form method="get" id="searchForm" class="d-flex align-items-center gap-2 mb-0">
+        <input type="text" class="form-control flex-grow-1 search-bar-input"
+               th:name="${searchItem}" th:placeholder="${searchMsg}" th:value="${param[__${searchItem}__]}" />
+        <!--Provo a mantenere nella finestra di input l'ultima ricerca se l'effetto è fastidioso rimuovere th:value-->
+
+        <button class="btn" type="submit">Cerca</button>
+        <button th:if="${searchItem}=='title'" class="btn" type="button"  data-bs-toggle="collapse" data-bs-target="#extraFilters"
+                aria-expanded="false" aria-controls="extraFilters">
+            <i class="bi bi-caret-down-fill"></i>
+        </button>
+    </form>
+</div>
+
+
+
+<div th:fragment="extraFiltersFragment">
+    <div class="collapse" id="extraFilters"
+         th:classappend="${param.author} != null or ${param.yearFrom} != null or ${param.yearTo} != null ? ' show' : ''">
+        <div class="shadow-sm bg-white pt-0 pb-3 border-bottom">
+            <div class="container-fluid">
+                <div class="d-flex flex-wrap gap-3 align-items-center justify-content-end">
+                    <i class="bi bi-person-fill text-muted"></i>
+                    <input form="searchForm" type="text" class="form-control" style="width: 200px;" name="author"
+                           placeholder="Autore" th:value="${param.author}" />
+                    <i class="bi bi-calendar text-muted"></i>
+                    <input form="searchForm" type="number" class="form-control" style="width: 100px;" name="yearFrom"
+                           placeholder="Da" th:value="${param.yearFrom}" min="0" />
+                    <span class="text-muted">-</span>
+                    <input form="searchForm" type="number" class="form-control" style="width: 100px;" name="yearTo"
+                           placeholder="A" th:value="${param.yearTo}" min="0" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:fragment="booksNavBarWithFilters">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg custom-theme py-2 fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">SIWBooks</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse">
+                <div class="navbar-nav me-auto mb-0 mb-lg-0">
+                    <a class="nav-link" href="/book">Libri</a>
+                    <a class="nav-link" href="/author">Autori</a>
+                </div>
+
+                <div class="navbar-nav mb-0 mb-lg-0 ms-auto">
+                    <div th:replace="~{fragments/navBar :: searchBarFragment('title','Cerca titolo')}"></div>
+                    <a class="nav-link" th:if="${userDetails==null}" href="/login">Login</a>
+                    <a class="nav-link" th:if="${userDetails!=null}" href="/myProfile"
+                       th:text="${userDetails.username}"></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Filtri extra sotto la navbar -->
+    <div th:replace="~{fragments/navBar :: extraFiltersFragment}"></div>
+
+</div>
+</body>
+
+</html>

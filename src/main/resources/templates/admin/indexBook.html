@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagina di gestione dei Libri</title>
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body class="pt-nav-bar">
+<div th:replace="fragments/navBar ::booksNavBarWithFilters"></div>
+<div class="container">
+    <div class="row mt-3 text-start">
+        <h1>Gestione Libri</h1>
+    </div>
+    <div class="row">
+        <div class="col text-end mb-3">
+            <a class="btn btn-success" href="/admin/formNewBook" title="Aggiungi Libro">
+                <i class="bi bi-plus-lg"></i>
+            </a>
+        </div>
+    </div>
+    <section>
+        <div>
+            <div th:if="${books.isEmpty()}">Nessun autore presente nel sistema</div>
+            <div th:each="book : ${books}">
+                <!-- Riga autore + azioni -->
+                <div class="card mb-1">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title">
+                                    <a class="text-decoration-none" th:href="@{'/book/' + ${book.id}}"
+                                       th:text="${book.title + ' (' + #temporals.format(book.publicationDate, 'yyyy')+')'}">Titolo
+                                        e
+                                        data</a>
+                                </h5>
+
+                            </div>
+                            <div class="col text-end">
+                                <div class="btn-group gap-1" role="group" aria-label="Azioni autore">
+                                    <a th:href="@{'/admin/formUpdateBook/' + ${book.id}}" class="btn btn-primary"
+                                       title="Modifica">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                    <a th:href="@{'/admin/deleteBook/' + ${book.id}}" class="btn btn-danger"
+                                       title="Cancella"  onclick="return confirm('Eliminare la Libro?')">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="/js/bookSearchForm.js"></script> <!--INCLUDO SCRIPT DI PULIZIA DEI CAMPI VUOTI PER MAGGIOR PULIZIA-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> <!--NECESSARIO PER FA FUNZIONARE L'ANIMAZIONE DEL BOTTONE--->
+</div>
+
+
+
+</body>
+</html>

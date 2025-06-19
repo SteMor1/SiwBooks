@@ -1,23 +1,34 @@
 package it.uniroma3.siwbooks.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.LocalDate;
+import java.util.List;
+
 @Entity
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(nullable = false)
+    @NotBlank
     private String firstName;
-    @Column(nullable = false)
+    @NotBlank
     private String lastName;
-    @Column(nullable = false)
+    @NotNull
+    @PastOrPresent(message = "{dateOfBirth.pastOrPresent}")
     private LocalDate dateOfBirth;
+    @PastOrPresent(message = "{dateOfDeath.pastOrPresent}")
     private LocalDate dateOfDeath;
-    @Column(nullable = false)
+    @NotNull
     private String nationality;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Image picture;
+    @ManyToMany(mappedBy = "authors")
+    private List<Book> books;
     public Long getId() {
         return id;
     }
@@ -64,5 +75,21 @@ public class Author {
 
     public void setNationality(String nationality) {
         this.nationality = nationality;
+    }
+
+    public Image getPicture() {
+        return picture;
+    }
+
+    public void setPicture(Image picture) {
+        this.picture = picture;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 }

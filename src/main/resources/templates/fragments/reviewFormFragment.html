@@ -1,0 +1,35 @@
+<!-- fragments/reviewForm.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="reviewForm(title, actionUrl, review, isUpdate)">
+  <main class="review-form-container">
+    <h2 th:text="${title}">Titolo</h2>
+
+    <form th:action="${actionUrl}" th:object="${review}" method="post" class="review-form">
+
+      <!-- Solo per update -->
+      <input type="hidden" th:if="${isUpdate}" th:field="*{id}" />
+
+      <!-- Solo per add -->
+      <input type="hidden" th:unless="${isUpdate}" th:field="*{author}" />
+      <input type="hidden" th:unless="${isUpdate}" th:field="*{book}" />
+
+      <label for="title">Titolo</label>
+      <input type="text" id="title" th:field="*{title}" required />
+
+      <label for="rating">Voto</label>
+      <select id="rating" th:field="*{rating}" required>
+        <option th:each="i : ${#numbers.sequence(1,5)}"
+                th:value="${i}" th:text="${i}">1</option>
+      </select>
+
+      <label for="text">Testo</label>
+      <textarea id="text" th:field="*{text}" rows="6" required></textarea>
+
+      <button type="submit" class="btn-submit">Invia Recensione</button>
+    </form>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Aggiorna Libro</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/navbar.css"/>
+    <link rel="stylesheet" href="/css/formBook.css"/>
+</head>
+
+<body>
+<div th:fragment="bookForm(title,addAuthorBtn,confirmButtonText,action)">
+
+
+    <div class="container">
+        <h1 class="mb-4 mt-4" th:text="${title}">Aggiorna informazioni Libro</h1>
+        <div class="card shadow">
+            <div class="card-body">
+
+
+                <div class="row h-100">
+                    <!-- Prima colonna: Carosello con flexbox -->
+                    <div class="col-md-4 d-flex flex-column">
+                        <div class="mb-3 book-carousel-image" >
+                            <!--USO ASPECT RATIO DEI LIBRI-->
+                            <div id="bookCarousel" class="carousel slide h-100">
+                                <div class="carousel-inner h-100">
+                                    <!-- Slide principale (copertina) -->
+                                    <div class="carousel-item active h-100">
+                                        <img id="book-cover" th:src="@{'/book/' + ${book.id} + '/cover'}"
+                                             class="d-block w-100 h-100 img-thumbnail book-cover"
+                                             alt="Copertina principale"
+                                             onerror="this.onerror=null;this.src='/images/book_cover_placeholder.jpg';">
+                                    </div>
+                                    <!-- Se non ci sono altre immagini del libro aggiungo una slide per fa si che l'utente possa aggiungere altre immagini -->
+
+                                    <div th:if="${book.getBookImages() == null or book.getBookImages().isEmpty()}"
+                                         class="carousel-item h-100">
+                                        <div class="d-flex align-items-center justify-content-center h-100 bg-light rounded border border-dashed">
+                                            <div class="text-center text-muted">
+                                                <i class="fas fa-plus-circle fa-3x mb-2"></i>
+                                                <p class="mb-0">Aggiungi altre foto</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div th:if="${book.getBookImages() != null and !book.getBookImages().isEmpty()}"
+                                         th:each="i : ${#numbers.sequence(1, book.getBookImages().size())}"
+                                         class="carousel-item h-100">
+                                        <img th:src="@{'/book/' + ${book.id} + '/images/' + ${i-1}}"
+                                             class="d-block w-100 h-100 img-thumbnail book-cover"
+                                             th:alt="'Immagine ' + ${i}"
+                                             onerror="this.onerror=null;this.src='/images/book_cover_placeholder.jpg';">
+                                    </div>
+                                </div>
+
+                                <!-- Controlli -->
+                                <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel"
+                                        data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel"
+                                        data-bs-slide="next">
+                                    <span class="carousel-control-next-icon"></span>
+                                </button>
+
+                                <!-- Indicatori -->
+                                <div class="carousel-indicators">
+                                    <button type="button" data-bs-target="#bookCarousel" data-bs-slide-to="0"
+                                            class="active" aria-current="true" aria-label="Copertina"></button>
+                                    <button th:if="${book.getBookImages() == null or book.getBookImages().isEmpty()}"
+                                            type="button"
+                                            data-bs-target="#bookCarousel" data-bs-slide-to="1"
+                                            aria-label="Aggiungi immagini"></button>
+                                    <!-- Indicatore per la slide placeholder che viene aggiunta quando non ci sono immagini per il libro -->
+
+                                    <button th:if="${book.getBookImages() != null and !book.getBookImages().isEmpty()}"
+                                            th:each="i : ${#numbers.sequence(1, book.getBookImages().size())}"
+                                            type="button" data-bs-target="#bookCarousel"
+                                            th:data-bs-slide-to="${i}"
+                                            th:aria-label="'Immagine ' + ${i}"></button>
+                                    <!-- Indicatore per le immagini presenti per il libro -->
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Input allineato al fondo -->
+                        <div class="mt-auto button-bar">
+                            <button class="btn btn-outline-primary w-100 mb-3" id="add-img">
+                                <i class="fas fa-plus me-2"></i>Aggiungi Immagine
+                            </button>
+                            <input form="updateForm" class="form-control mb-2" type="file" id="bookCover"
+                                   name="bookCover" accept="image/*" style="display:none"/>
+                            <small class="text-muted text-center d-block" id="inputHint">
+                                <i class="fas fa-images me-1"></i>
+                                <span id="hintText">Seleziona foto per il carosello</span>
+                            </small>
+                            <!-- Input Nascosto per le altre immagini -->
+                            <input form="updateForm" type="file" id="otherImages" name="otherImages" accept="image/*"
+                                   multiple style="display:none"/>
+                        </div>
+                    </div>
+
+                    <!-- Seconda colonna: Form con flexbox -->
+                    <div class="col-md-8 d-flex flex-column">
+                        <form id="updateForm" th:action="${action}" th:object="${book}" method="post"
+                              enctype="multipart/form-data" class="flex-grow-1 d-flex flex-column">
+                            <!---ERRORI GLOBALI-->
+                            <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+                                <div class="mb-0">
+                                    <a th:each="err : ${#fields.globalErrors()}" th:text="${err}"></a>
+                                </div>
+                            </div>
+
+                            <input type="hidden" th:field="*{id}"/>
+
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Titolo:</label>
+                                <input type="text" id="title" th:field="*{title}" class="form-control" required/>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="publicationDate" class="form-label">
+                                    <i class="fas fa-calendar me-2"></i>Data di pubblicazione:
+                                </label>
+                                <input type="date" id="publicationDate" name="publicationDate" class="form-control"
+                                       th:value="${#temporals.format(book.publicationDate, 'yyyy-MM-dd')}" required/>
+                                <div class="text-danger mt-1" th:if="${#fields.hasErrors('publicationDate')}"
+                                     th:errors="*{publicationDate}"></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Autori Selezionati:</label>
+                                <div th:if="${addAuthorBtn}!=true" id="noAuthorsSelectedMsg" class="text-muted">
+                                    <i class="bi bi-info-circle"></i> Non sono stati selezionati autori
+                                </div>
+                                <div th:if="!${addAuthorBtn}" id="selectedAuthors" class="d-flex flex-wrap gap-2">
+                                    <!--RIFERIMENTO NECESSARIO AL JS PER VISUALIZZARE GLI AUTORI SELEZIONATI DENTRO LA CARD-->
+                                </div>
+                                <div th:if="${addAuthorBtn}" class="alert alert-info d-flex align-items-center">
+                                    <!--In questo modo il form è utilizzabile sia durante la creazione che durante l'aggiornamento del libro, durante la creazione questa sezione non va mostrata perchè addAuthors non funziona su libri non ancora salvati. Si usa invece JS -->
+                                    <i class="fas fa-users me-2"></i>
+                                    <div class="flex-grow-1">
+                                        <strong>Gestione Autori</strong><br>
+                                        <small>Clicca qui per aggiornare gli autori associati a questo libro</small>
+                                    </div>
+                                    <a th:href="@{'/admin/updateAuthors/'+ ${book.id}}" class="btn btn-outline-primary">
+                                        <i class="fas fa-edit me-2"></i>Aggiorna Autori
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Spazio che cresce per spingere bottoni in basso -->
+                            <div class="flex-grow-1"></div>
+
+                            <!-- Bottoni allineati al fondo -->
+                            <div class="mt-4">
+                                <div class="row">
+                                    <div class="col-12 col-sm-6 mb-2 mb-sm-0">
+                                        <a th:href="@{'/admin/indexBook'}" class="btn btn-outline-secondary w-100">
+                                            <i class="fas fa-arrow-left me-2"></i>Annulla
+                                        </a>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fas fa-save me-2"></i>Aggiorna Libro
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+      <script src="/js/bookFormImagesManager.js"></script>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</div>
+</body>
+
+</html>

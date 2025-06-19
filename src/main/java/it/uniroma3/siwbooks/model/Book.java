@@ -1,6 +1,9 @@
 package it.uniroma3.siwbooks.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -10,10 +13,20 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotEmpty
     private String title;
+    @NotNull
+    @PastOrPresent(message = "La data di pubblicazione non può essere nel futuro")
     private LocalDate publicationDate;
     @ManyToMany
     private List<Author> authors;
+    @OneToMany(mappedBy = "book",cascade = CascadeType.REMOVE)
+    private List<Review> reviews;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Image coverImage;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Image> bookImages;
+
 
     public Long getId() {
         return id;
@@ -45,5 +58,27 @@ public class Book {
 
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
+    }
+    public List<Review> getReviews() {
+        return reviews;
+    }
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public List<Image> getBookImages() {
+        return bookImages;
+    }
+
+    public void setBookImages(List<Image> bookImages) {
+        this.bookImages = bookImages;
+    }
+
+    public Image getCoverImage() {
+        return coverImage;
+    }
+
+    public void setCoverImage(Image coverImage) {
+        this.coverImage = coverImage;
     }
 }

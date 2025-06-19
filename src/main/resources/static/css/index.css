@@ -1,0 +1,21 @@
+.hero-section{
+   height: 60vh;
+    min-height: 400px;
+}
+.hero-background {
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),url('/images/library.png') center/cover no-repeat;
+}
+.book-cover {
+   width: 250px;
+    aspect-ratio: 2/3;
+    overflow: hidden;
+
+}
+.book-cover img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+.book-list{
+    width: max-content;
+}

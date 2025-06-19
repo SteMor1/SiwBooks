@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Modifica Recensione</title>
+  <link rel="stylesheet" href="/css/formUpdateReview.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body >
+
+<div th:replace="fragments/navBar ::navbarFragment(searchField=false,searchItem='',searchMsg='')"></div>
+
+
+
+<div class="container pt-nav-bar">
+  <div th:replace="fragments/reviewFormFragment :: reviewForm(title='Modifica Recensione',actionUrl=@{/updateReview},review=${review},isUpdate=true)"></div>
+</div>
+
+</body>
+</html>

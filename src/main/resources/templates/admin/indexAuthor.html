@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagina di gestione degli Autori</title>
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+</head>
+<body class="pt-nav-bar">
+<div th:replace="fragments/navBar ::navbarFragment(searchField=true,searchItem='authorName',searchMsg='Cerca Autore')"></div>
+<div class="container">
+    <div class="row mt-3 text-start">
+        <h1>Gestione Autori</h1>
+    </div>
+    <div class="row">
+        <div class="col text-end mb-3">
+            <a class="btn btn-success" href="/admin/formNewAuthor">Aggiungi Autore</a>
+        </div>
+    </div>
+    <section>
+        <div>
+            <div th:if="${authors.isEmpty()}">Nessun autore presente nel sistema</div>
+            <div th:each="author : ${authors}">
+
+                <!-- Riga autore + azioni -->
+                <div class="card mb-1">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title">
+                                    <a class="text-decoration-none" th:href="@{'/author/' + ${author.id}}" th:text="${author.firstName + ' ' + author.lastName}">Nome Cognome</a>
+                                </h5>
+
+                            </div>
+                            <div class="col text-end">
+                                <div class="btn-group gap-1" role="group" aria-label="Azioni autore">
+                                    <a th:href="@{'/admin/formUpdateAuthor/' + ${author.id}}" class="btn btn-primary" title="Modifica">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                    <a th:href="@{'/admin/deleteAuthor/' + ${author.id}}" class="btn btn-danger" title="Cancella" onclick="return confirm('Eliminare l\'Autore?')">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>
