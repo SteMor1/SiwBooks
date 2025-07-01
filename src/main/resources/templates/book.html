@@ -19,11 +19,13 @@
     <div class="row mt-4 gx-4">
         <div class="col-auto">
             <div class="mb-3">
+
                 <!-- Container con aspect ratio corretto -->
                 <div id="bookCarousel" class="carousel slide book-image-container">
                     <div class="carousel-inner h-100">
+
                         <!-- Slide principale (copertina) -->
-                        <div class="carousel-item active h-100">
+                        <div class="carousel-item active h-100 ">
                             <img id="book-cover" th:src="@{'/book/' + ${book.id} + '/cover'}"
                                  class="d-block w-100 h-100 img-thumbnail book-cover-img"
                                  alt="Copertina principale"

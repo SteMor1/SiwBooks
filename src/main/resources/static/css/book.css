@@ -4,8 +4,10 @@
 }
 
 .book-cover-img {
+
     object-fit: contain !important; /* CAMBIATO da cover a contain */
     object-position: center;
+
 
 }
 
