@@ -19,8 +19,11 @@
     <div class="row mt-4 gx-4">
         <div class="col-auto">
             <div class="mb-3">
-                <div id="bookCarousel" class="carousel slide h-100 ">
-                    <div class="carousel-inner h-100 book-image-container">
+
+                <!-- Container con aspect ratio corretto -->
+                <div id="bookCarousel" class="carousel slide book-image-container">
+                    <div class="carousel-inner h-100">
+
                         <!-- Slide principale (copertina) -->
                         <div class="carousel-item active h-100 ">
                             <img id="book-cover" th:src="@{'/book/' + ${book.id} + '/cover'}"
@@ -28,6 +31,7 @@
                                  alt="Copertina principale"
                                  onerror="this.onerror=null;this.src='/images/book_cover_placeholder.jpg';">
                         </div>
+                        <!-- Immagini aggiuntive -->
                         <div th:if="${book.getBookImages() != null and !book.getBookImages().isEmpty()}"
                              th:each="i : ${#numbers.sequence(1, book.getBookImages().size())}"
                              class="carousel-item h-100">
@@ -36,31 +40,34 @@
                                  th:alt="'Immagine ' + ${i}"
                                  onerror="this.onerror=null;this.src='/images/book_cover_placeholder.jpg';">
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel"
-                                data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon"></span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel"
-                                data-bs-slide="next">
-                            <span class="carousel-control-next-icon"></span>
-                        </button>
 
-                        <!-- Indicatori -->
-                        <div class="carousel-indicators">
-                            <button type="button" data-bs-target="#bookCarousel" data-bs-slide-to="0" class="active"
-                                    aria-current="true" aria-label="Copertina"></button>
-                            <!--Indicatori per altre immagini(se presenti)-->
-                            <button th:if="${book.getBookImages() != null and !book.getBookImages().isEmpty()}"
-                                    th:each="i : ${#numbers.sequence(1, book.getBookImages().size())}" type="button"
-                                    data-bs-target="#bookCarousel" th:data-bs-slide-to="${i}"
-                                    th:aria-label="'Immagine ' + ${i}"></button>
+                        <!-- Controlli carousel (solo se ci sono più immagini) -->
+                        <div th:if="${book.getBookImages() != null and !book.getBookImages().isEmpty()}">
+                            <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel"
+                                    data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel"
+                                    data-bs-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                            </button>
 
+                            <!-- Indicatori -->
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#bookCarousel" data-bs-slide-to="0" class="active"
+                                        aria-current="true" aria-label="Copertina"></button>
+                                <button th:each="i : ${#numbers.sequence(1, book.getBookImages().size())}"
+                                        type="button" data-bs-target="#bookCarousel"
+                                        th:data-bs-slide-to="${i}"
+                                        th:aria-label="'Immagine ' + ${i}"></button>
+                            </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
+
+        <!-- Informazioni libro -->
         <div class="col">
             <h1 th:text="${book.title + ' (' + #temporals.format(book.publicationDate, 'yyyy') + ')'}">Titolo</h1>
 
@@ -73,64 +80,79 @@
                 </div>
             </div>
         </div>
-
     </div>
 
-
-    <div class="row">
+    <!-- Sezione recensioni -->
+    <div class="row mt-4">
         <div class="col-6">
             <h2>Recensioni</h2>
             <div class="mb-2" th:if="${book.getReviews().isEmpty()}">Non ci sono recensioni per questo libro</div>
         </div>
         <div class="col-6 text-end">
             <div th:if="${userReview==null}" class="add-review">
-                <a th:href="@{'/formNewReview/' + ${book.id}}" class="btn-add-review">Aggiungi Recensione</a>
+                <a th:href="@{'/formNewReview/' + ${book.id}}" class="btn btn-primary">Aggiungi Recensione</a>
             </div>
         </div>
+    </div>
 
-    </div>
-    <div class="review mb-2" th:if="${userReview!=null}">
-        <div class="menu-button-container">
-            <button class="menu-button" onclick="toggleMenu(this)">⋮</button>
-            <div class="menu-dropdown hidden">
-                <a th:href="@{'/updateReview/' + ${userReview.id}}">Modifica</a>
-                <a th:href="@{'/deleteReview/' + ${userReview.id}}"
-                   onclick="return confirm('Eliminare la recensione?')">Elimina</a>
+    <!-- Recensione utente -->
+    <div class="review mb-3 border rounded p-3" th:if="${userReview!=null}">
+        <div class="d-flex justify-content-between align-items-start">
+            <div class="flex-grow-1">
+                <h5 class="review-title mb-2" th:text="${userReview.getTitle()}">Titolo recensione</h5>
+                <div class="review-meta mb-2">
+                    <span class="review-author text-muted" th:text="${userReview.author.email}">Nome Autore</span>
+                    <span class="review-stars ms-2 text-warning"
+                          th:utext="${'★'.repeat(userReview.getRating()) + '☆'.repeat(5 - userReview.getRating())}">
+                        ★★★★☆
+                    </span>
+                </div>
+                <p class="review-text" th:text="${userReview.getText()}">Testo recensione</p>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="dropdown">
+                    ⋮
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" th:href="@{'/updateReview/' + ${userReview.id}}">Modifica</a></li>
+                    <li><a class="dropdown-item text-danger" th:href="@{'/deleteReview/' + ${userReview.id}}"
+                           onclick="return confirm('Eliminare la recensione?')">Elimina</a></li>
+                </ul>
             </div>
         </div>
-        <p class="review-title" th:text="${userReview.getTitle()}">Titolo recensione</p>
-        <div class="review-meta">
-            <span class="review-author" th:text="${userReview.author.email}">Nome Autore</span>
-            <span class="review-stars"
-                  th:utext="${'★'.repeat(userReview.getRating()) + '☆'.repeat(5 - userReview.getRating())}">
-                    ★★★★☆
-                </span>
-        </div>
-        <p class="review-text" th:text="${userReview.getText()}">Testo recensione</p>
     </div>
-    <div class="review mb-2" th:each="review : ${bookReviews}">
-        <div sec:authorize="hasAuthority('ADMIN')" class="menu-button-container">
-            <button class="menu-button" onclick="toggleMenu(this)">⋮</button>
-            <div class="menu-dropdown hidden">
-                <a th:href="@{'/deleteReview/' + ${review.id}}"
-                   onclick="return confirm('Eliminare la recensione?')">Elimina</a>
+
+    <!-- Altre recensioni -->
+    <div class="review mb-3 border rounded p-3" th:each="review : ${bookReviews}">
+        <div class="d-flex justify-content-between align-items-start">
+            <div class="flex-grow-1">
+                <h5 class="review-title mb-2" th:text="${review.getTitle()}">Titolo recensione</h5>
+                <div class="review-meta mb-2">
+                    <span class="review-author text-muted" th:text="${review.author.email}">Nome Autore</span>
+                    <span class="review-stars ms-2 text-warning"
+                          th:utext="${'★'.repeat(review.getRating()) + '☆'.repeat(5 - review.getRating())}">
+                        ★★★★☆
+                    </span>
+                </div>
+                <p class="review-text" th:text="${review.getText()}">Testo recensione</p>
+            </div>
+            <div sec:authorize="hasAuthority('ADMIN')" class="dropdown">
+                <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="dropdown">
+                    ⋮
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item text-danger" th:href="@{'/deleteReview/' + ${review.id}}"
+                           onclick="return confirm('Eliminare la recensione?')">Elimina</a></li>
+                </ul>
             </div>
         </div>
-        <p class="review-title" th:text="${review.getTitle()}">Titolo recensione</p>
-        <div class="review-meta">
-            <span class="review-author" th:text="${review.author.email}">Nome Autore</span>
-            <span class="review-stars"
-                  th:utext="${'★'.repeat(review.getRating()) + '☆'.repeat(5 - review.getRating())}">
-                    ★★★★☆
-                </span>
-        </div>
-        <p class="review-text" th:text="${review.getText()}">Testo recensione</p>
     </div>
 </div>
 
-<script src="/js/reviewDropDown.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/reviewDropDown.js}"></script>
+
 
 </body>
-
 </html>
