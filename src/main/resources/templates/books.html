@@ -20,7 +20,7 @@
             <h3>Nessun libro presente nel sistema</h3>
         </div>
 
-        <div class="row g-4 justify-content-start">  <!-- justify-content-start per allineare i libri a sinistra -->
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">  <!-- justify-content-start per allineare i libri a sinistra -->
             <div class="col-auto" th:each="book : ${books}">
                 <div class="card h-100 shadow-sm book-card ">
                     <a th:href="@{'/book/' + ${book.id}}" class="text-decoration-none text-reset">

@@ -21,7 +21,8 @@
             <h3>Nessun autore presente nel sistema</h3>
         </div>
 
-        <div class="row g-4 justify-content-start">
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
             <div class="col-auto" th:each="author : ${authors}">
                 <div class="card h-100 shadow-sm author-card" >
                     <a th:href="@{'/author/' + ${author.id}}" class="text-decoration-none text-reset">
