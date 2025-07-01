@@ -26,16 +26,11 @@
             <div id="noAuthorsAvailableMsg"  class="text-muted">
                 <i class="bi bi-info-circle"></i> Non ci sono altri autori da aggiungere
             </div>
-            <div th:each="author:${authors}" class="card sm-1 author-card" th:href="@{'/author/' + ${author.id}}" th:attr="data-author-id=${author.id}">
+            <div th:each="author:${authors}" class="card sm-1 author-card mb-2"  th:href="@{'/author/' + ${author.id}}" th:attr="data-author-id=${author.id}">
                 <div class="row g-4">
-                    <div class="col-sm-1">
-                        <img class="img-fluid rounded-start" th:src="@{'/author/' + ${author.id} + '/photo'}"
-                             alt="Foto autore"
-                             onerror="this.onerror=null;this.src='/images/avatar_placeholder.jpg';">
-                    </div>
                     <div class="col-sm-4">
                         <div class="car-body">
-                            <h5 class="mt-3" th:text="${author.firstName}+' '+${author.lastName}">
+                            <h5 class="px-2 mt-3 mb-3" th:text="${author.firstName}+' '+${author.lastName}">
                             </h5>
                         </div>
                     </div>

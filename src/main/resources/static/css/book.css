@@ -4,6 +4,8 @@
 }
 .book-cover-img {
     object-fit: cover;
+    max-width: 250px;
+    aspect-ratio: 3 / 4;
 }
 .book-reviews {
     margin-top: 50px;

@@ -10,3 +10,6 @@
 .button-bar {
     max-width: 250px;
 }
+.author-card {
+    min-height: 30px;
+}
