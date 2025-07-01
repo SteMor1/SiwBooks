@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accesso Negato - SiwBooks</title>
+    <link href="/css/navbar.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+
+<body>
+<!-- Navbar coerente con il sito -->
+<div th:replace="fragments/navBar ::navbarFragment(searchField=false,searchItem='',searchMsg='')"></div>
+
+<!-- Contenuto principale -->
+<main class="container mt-4 pt-nav-bar">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-6">
+            <div class="card shadow h-100">
+                <div class="card-header text-center bg-danger text-white">
+                    <h2 class="mb-0">
+                        <i class="bi bi-shield-x me-2"></i>Accesso Negato
+                    </h2>
+                </div>
+                <div class="card-body text-center p-5">
+                    <!-- Icona e codice errore -->
+                    <div class="mb-4">
+                        <i class="bi bi-ban text-danger" style="font-size: 6rem;"></i>
+                    </div>
+                    <h1 class="display-1 text-danger fw-bold mb-3">403</h1>
+
+                    <!-- Messaggio -->
+                    <h3 class="mb-3">Ops! Non puoi accedere qui</h3>
+                    <p class="lead text-muted mb-4">
+                        Non hai i permessi necessari per visualizzare questa pagina.<br>
+                        Effettua il login o contatta l'amministratore se pensi sia un errore.
+                    </p>
+
+                    <!-- Bottoni d'azione -->
+                    <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center align-items-center">
+                        <a th:href="@{/}" class="btn btn-primary">
+                            <i class="bi bi-house-door me-2"></i>Torna alla Home
+                        </a>
+                        <a th:href="@{/login}" class="btn btn-outline-primary">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Accedi
+                        </a>
+                        <a th:href="@{/book}" class="btn btn-outline-secondary">
+                            <i class="bi bi-book me-2"></i>Esplora Libri
+                        </a>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Sezione suggerimenti -->
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
