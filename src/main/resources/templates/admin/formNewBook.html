@@ -14,7 +14,7 @@
 </head>
 <body class="pt-nav-bar">
 <div th:replace="fragments/navBar ::navbarFragment(searchField=false,searchItem='',searchMsg='')"></div>
-<div th:replace="/fragments/bookFragments :: bookForm(title='Aggiungi Libro',addAuthorBtn=false,confirmButtonText='Aggiungi Libro',action='/admin/book')"></div>
+<div th:replace="fragments/bookFragments :: bookForm(title='Aggiungi Libro',addAuthorBtn=false,confirmButtonText='Aggiungi Libro',action='/admin/book')"></div>
 
 <div class="container mt-4">
     <form th:action="@{/admin/book}" method="post" enctype="multipart/form-data" th:object="${book}">
